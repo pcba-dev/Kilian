@@ -9,15 +9,7 @@ Kilian is an app that provides accurate time estimates for trekking trails, help
 
 ## Getting Started 🚀
 
-This project contains 3 flavors:
-
-- development
-- staging
-- production
-
-To run the desired flavor either use the launch configuration in VSCode/Android Studio or use the following commands:
-
-_\*Kilian works on iOS, Android, Web, and Windows._
+_\*Kilian works on iOS, Android and Web._
 
 ---
 

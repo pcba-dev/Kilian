@@ -1,0 +1,26 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+  exclude:
+    - lib/**.json.dart
+    - lib/**.g.dart
+
+linter:
+  rules:
+    # ------ Disable individual rules ----- #
+    # ------------------------------------- #
+    # DO allow declaring parameters as "final".
+    avoid_final_parameters: false
+    # ALLOW lines longer than 80 characters.
+    lines_longer_than_80_chars: false
+    # DO type annotate initialized local variables.
+    omit_local_variable_types: false
+    #
+    public_member_api_docs: false
+    # Do NOT sort constructor declarations before other members.
+    sort_constructors_first: false
+    # ALLOW "new" keyword to create instances.
+    unnecessary_new: false

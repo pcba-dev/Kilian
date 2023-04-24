@@ -1,0 +1,39 @@
+name: kilian
+description: Kilian is an app that provides accurate time estimates for trekking trails, helping hikers plan their journey with ease.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.18.0 <3.0.0"
+
+dependencies:
+  # BLoC pattern.
+  bloc: ^8.1.1
+
+  # For Json encoding and decoding.
+  json_annotation: ^4.8.0
+
+  flutter:
+    sdk: flutter
+
+  # BLoC pattern for Flutter.
+  flutter_bloc: ^8.1.2
+
+  flutter_localizations:
+    sdk: flutter
+
+  intl: ^0.17.0
+
+  # Declarative routes to regardless of the platform, handle deep and dynamic linking.
+  go_router: ^6.5.7
+
+dev_dependencies:
+  bloc_test: ^9.1.1
+  flutter_test:
+    sdk: flutter
+  mocktail: ^0.3.0
+  very_good_analysis: ^4.0.0+1
+
+flutter:
+  uses-material-design: true
+  generate: true
