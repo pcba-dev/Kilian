@@ -7,7 +7,7 @@ class TrailSegmentViewModel extends TrailSegment {
     super.mid, {
     required this.index,
     required this.duration,
-    required this.cumulative,
+    required this.resting,
   });
 
   /// Index
@@ -17,7 +17,7 @@ class TrailSegmentViewModel extends TrailSegment {
   final Duration duration;
 
   /// Trail cumulative duration.
-  final Duration cumulative;
+  final Duration resting;
 }
 
 class TrailViewModel extends Trail<TrailSegmentViewModel> {

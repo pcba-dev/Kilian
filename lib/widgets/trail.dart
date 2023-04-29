@@ -3,7 +3,6 @@ import 'package:kilian/widgets/painting.dart';
 import 'package:kilian/widgets/theme.dart';
 
 import './model_extensions.dart';
-import '../models/trail.dart';
 import '../view-models/trail.dart';
 
 const Widget _kSpacingHorizontalIcon = const SizedBox(width: 3);
@@ -14,7 +13,7 @@ const Widget _kVerticalSpacing = const SizedBox(height: 5);
 class TrailSummary extends StatefulWidget {
   const TrailSummary(this.trail, {this.action, super.key});
 
-  final Trail trail;
+  final TrailViewModel trail;
 
   final Widget? action;
 
@@ -175,8 +174,7 @@ class _TrailSummaryState extends State<TrailSummary> {
             new Icon(Icons.hiking, color: Colors.black, size: 26),
             _kSpacingHorizontalIcon,
             new Text(
-              // TODO
-              new Duration(hours: 2, minutes: 26).toHumanString(),
+              widget.trail.duration.toHumanString(),
               style: const TextStyle(fontSize: 20),
               textAlign: TextAlign.end,
             ),
@@ -189,8 +187,7 @@ class _TrailSummaryState extends State<TrailSummary> {
             new Icon(Icons.pause_circle, color: Colors.blueGrey, size: 22),
             _kSpacingHorizontalIcon,
             new Text(
-              // TODO
-              new Duration(hours: 0, minutes: 10).toHumanString(),
+              widget.trail.resting.toHumanString(),
               style: const TextStyle(fontSize: 20, color: Colors.black38),
               textAlign: TextAlign.end,
             ),
@@ -353,7 +350,7 @@ class TrailSegmentTile extends StatelessWidget {
         ),
         _kVerticalSpacing,
         new Text(
-          segment.cumulative.toHumanString(),
+          segment.resting.toHumanString(),
           style: const TextStyle(fontSize: 16, color: Colors.black38),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,

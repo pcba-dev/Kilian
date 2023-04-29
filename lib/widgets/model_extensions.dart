@@ -49,7 +49,7 @@ extension MIDLevelExtended on MIDLevel {
         return 2;
       case MIDLevel.challenging:
         return 3;
-      case MIDLevel.difficult:
+      case MIDLevel.hard:
         return 4;
       case MIDLevel.extreme:
         return 5;
@@ -67,7 +67,7 @@ extension MIDLevelExtended on MIDLevel {
         return Colors.green;
       case MIDLevel.challenging:
         return Colors.amber;
-      case MIDLevel.difficult:
+      case MIDLevel.hard:
         return Colors.orange;
       case MIDLevel.extreme:
         return Colors.deepOrange;

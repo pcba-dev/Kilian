@@ -6,13 +6,15 @@ import './model_extensions.dart';
 import '../models/user.dart';
 
 class FitnessSelector extends StatelessWidget {
-  const FitnessSelector({required this.value, required this.onChanged, super.key});
+  FitnessSelector({required this.value, required this.onChanged, super.key});
 
   /// The value of the currently selected [FitnessLevel].
   final FitnessLevel value;
 
   /// Called when the user selects an item.
   final ValueChanged<FitnessLevel?> onChanged;
+
+  final FocusNode _focus = new FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class FitnessSelector extends StatelessWidget {
           children: <Widget>[
             new Flexible(
               child: new DropdownButtonFormField(
+                focusNode: _focus,
                 isExpanded: true,
                 isDense: false,
                 decoration: const InputDecoration(
@@ -44,7 +47,10 @@ class FitnessSelector extends StatelessWidget {
                 ),
                 value: value,
                 items: items,
-                onChanged: onChanged,
+                onChanged: (f) {
+                  _focus.unfocus();
+                  onChanged(f);
+                },
               ),
             ),
             kSpacingHorizontal,

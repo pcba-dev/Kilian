@@ -33,7 +33,7 @@ const _$MIDLevelEnumMap = {
   MIDLevel.easy: 'easy',
   MIDLevel.moderate: 'moderate',
   MIDLevel.challenging: 'challenging',
-  MIDLevel.difficult: 'difficult',
+  MIDLevel.hard: 'hard',
   MIDLevel.extreme: 'extreme',
 };
 

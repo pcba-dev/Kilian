@@ -24,11 +24,14 @@ Map<String, dynamic> _$UserTrailToJson<T extends Trail<TrailSegment>>(
       'params': instance.params,
     };
 
-UserParameters _$UserParametersFromJson(Map<String, dynamic> json) => UserParameters(
-      fitness: $enumDecode(_$FitnessLevelEnumMap, json['fitness']),
+UserParameters _$UserParametersFromJson(Map<String, dynamic> json) =>
+    UserParameters(
+      fitness: $enumDecodeNullable(_$FitnessLevelEnumMap, json['fitness']) ??
+          FitnessLevel.average,
     );
 
-Map<String, dynamic> _$UserParametersToJson(UserParameters instance) => <String, dynamic>{
+Map<String, dynamic> _$UserParametersToJson(UserParameters instance) =>
+    <String, dynamic>{
       'fitness': _$FitnessLevelEnumMap[instance.fitness]!,
     };
 

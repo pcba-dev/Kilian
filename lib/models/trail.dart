@@ -149,6 +149,6 @@ enum MIDLevel {
   easy, // Easy: Level 1
   moderate, // Moderate: Level 2
   challenging, // Challenging: Level 3
-  difficult, // Difficult: Level 4
+  hard, // Difficult: Level 4
   extreme, // Extreme: Level 5
 }

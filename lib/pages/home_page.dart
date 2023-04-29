@@ -18,9 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late Trail _trail;
 
-  final TrailCalculator trailCalculator = const TrailCalculator();
-
-  late FitnessLevel fitness;
+  TrailCalculator calculator = const StandardTrailCalculator();
 
   @override
   void initState() {
@@ -34,25 +32,28 @@ class _HomePageState extends State<HomePage> {
       const TrailSegment(670, 100, MIDLevel.moderate),
       const TrailSegment(2400, 0, MIDLevel.moderate),
     ]);
-    fitness = FitnessLevel.average;
+    calculator = const StandardTrailCalculator();
   }
 
   @override
   Widget build(BuildContext context) {
     // Initialize total duration.
     Duration totalDuration = Duration.zero;
+    Duration totalResting = Duration.zero;
 
     final List<TrailSegmentViewModel> segments = [];
     for (int i = 0; i < _trail.segments.length; ++i) {
-      final Duration segmentDuration = trailCalculator.computeDuration(_trail.segments[i]);
-      totalDuration = totalDuration + segmentDuration;
+      final Duration duration = calculator.computeDuration(_trail.segments[i]);
+      final Duration resting = calculator.computeResting(_trail.segments[i]);
+      totalDuration += duration;
+      totalResting += resting;
       segments.add(new TrailSegmentViewModel(
         _trail.segments[i].hdist,
         _trail.segments[i].dalt,
         _trail.segments[i].mid,
         index: i,
-        duration: segmentDuration,
-        cumulative: totalDuration,
+        duration: duration,
+        resting: resting,
       ));
     }
 
@@ -60,7 +61,7 @@ class _HomePageState extends State<HomePage> {
     final TrailViewModel trail = new TrailViewModel(
       segments,
       duration: totalDuration,
-      resting: Duration.zero,
+      resting: totalResting,
     );
 
     final UserTrail<TrailViewModel> userTrail = new UserTrail(trail: trail, params: new UserParameters());
@@ -75,7 +76,9 @@ class _HomePageState extends State<HomePage> {
               userTrail,
               onFitnessChanged: (fitness) {
                 if (fitness != null) {
-                  setState(() => this.fitness = fitness);
+                  setState(() {
+                    calculator = new StandardTrailCalculator(fitness: fitness);
+                  });
                 }
               },
             ),
