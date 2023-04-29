@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kilian/pages/router.dart';
 
+import './widgets/theme.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -25,6 +27,7 @@ class KilianApp extends StatelessWidget {
       routerConfig: kRouter,
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: const [Locale('es', 'ES')],
+      theme: kTheme,
     );
   }
 }

@@ -12,6 +12,8 @@ linter:
   rules:
     # ------ Disable individual rules ----- #
     # ------------------------------------- #
+    # DO use relative imports for files in lib/.
+    always_use_package_imports: false
     # DO allow declaring parameters as "final".
     avoid_final_parameters: false
     # ALLOW lines longer than 80 characters.
@@ -24,3 +26,5 @@ linter:
     sort_constructors_first: false
     # ALLOW "new" keyword to create instances.
     unnecessary_new: false
+    # ALLOW repeating "const" keyword in a const context.
+    unnecessary_const: false

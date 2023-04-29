@@ -3,16 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-/// Track point.
-@immutable
-class TrackPoint {
-  const TrackPoint(this.coordinates);
-
-  final Coordinates coordinates;
-
-  double get lat => coordinates.lat;
-  double get long => coordinates.long;
-}
+part 'geospatial.g.dart';
 
 /// An immutable class representing a pair of latitude and longitude coordinates, stored in degrees.
 @JsonSerializable()
@@ -24,8 +15,8 @@ class Coordinates {
   const Coordinates(this.lat, this.long);
 
   /// JSON serialization.
-  // factory Coordinates.fromJson(Map<String, dynamic> json) => _$CoordinatesFromJson(json);
-  // Map<String, dynamic> toJson() => _$CoordinatesToJson(this);
+  factory Coordinates.fromJson(Map<String, dynamic> json) => _$CoordinatesFromJson(json);
+  Map<String, dynamic> toJson() => _$CoordinatesToJson(this);
 
   @override
   bool operator ==(Object other) =>
