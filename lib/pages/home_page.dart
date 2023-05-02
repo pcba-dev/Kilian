@@ -79,6 +79,7 @@ class _HomePageState extends State<HomePage> {
                 }
               },
               onEditSegment: _onEditSegmentPressed,
+              onReorder: _onReorderSegment,
             ),
           ),
         ),
@@ -124,16 +125,38 @@ class _HomePageState extends State<HomePage> {
       });
     }
   }
+
+  void _onReorderSegment(final int oldPos, final int newPos) {
+    if (newPos != oldPos && newPos != oldPos + 1) {
+      setState(() {
+        final List<TrailSegment> segments = new List.from(_trail.segments);
+
+        final TrailSegment segment = segments.removeAt(oldPos);
+        segments.insert(newPos > oldPos ? newPos - 1 : newPos, segment);
+
+        _trail = new Trail(segments);
+      });
+    }
+  }
 }
 
 class _UserTrailView extends StatelessWidget {
-  const _UserTrailView(this.userTrail, {required this.onFitnessChanged, required this.onEditSegment, super.key});
+  const _UserTrailView(
+    this.userTrail, {
+    required this.onFitnessChanged,
+    required this.onEditSegment,
+    required this.onReorder,
+    super.key,
+  });
 
   final UserTrail<TrailViewModel> userTrail;
 
   final ValueChanged<FitnessLevel?> onFitnessChanged;
 
   final void Function(TrailSegment, int) onEditSegment;
+
+  /// Called to move a trail segment from one position to another position in the list.
+  final void Function(int oldPos, int newPos) onReorder;
 
   @override
   Widget build(BuildContext context) {
@@ -160,13 +183,8 @@ class _UserTrailView extends StatelessWidget {
               // Segments section.
               new Expanded(
                 child: new ListView(
-                  padding: const EdgeInsets.only(bottom: 70),
-                  children: userTrail.trail.segments
-                      .map((s) => new TrailSegmentTile(
-                            s,
-                            onPressed: () => onEditSegment(s, userTrail.trail.segments.indexOf(s)),
-                          ))
-                      .toList(),
+                  padding: const EdgeInsets.fromLTRB(kMarginSize, 0, kMarginSize, 70),
+                  children: _buildListItems(width: constraints.maxWidth - 2 * kMarginSize),
                 ),
               )
             ],
@@ -192,6 +210,69 @@ class _UserTrailView extends StatelessWidget {
         decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Colors.blueGrey, width: 0.5))),
         child: SizedBox(height: 2, width: double.infinity),
       ),
+    );
+  }
+
+  List<Widget> _buildListItems({required final double width}) {
+    final List<Widget> items = [];
+
+    // Add a draggable target box at the end.
+    if (userTrail.trail.segments.length > 1) {
+      items.add(_buildDragTarget(0));
+    } else {
+      items.add(const SizedBox(height: 20)); // Spacing.
+    }
+
+    for (int i = 0; i < userTrail.trail.segments.length * 2 - 1; ++i) {
+      final int index = (i / 2).floor();
+      if (i.isOdd) {
+        // Add the draggable target box.
+        items.add(_buildDragTarget(index + 1));
+      } else {
+        // Add the draggable segment tile.
+        items.add(_buildDraggable(userTrail.trail.segments[index], index, width: width));
+      }
+    }
+    // Add a draggable target box at the end.
+    if (userTrail.trail.segments.length > 1) {
+      items.add(_buildDragTarget(userTrail.trail.segments.length));
+    }
+
+    return items;
+  }
+
+  Widget _buildDraggable(final TrailSegmentViewModel segment, final int index, {required final double width}) {
+    final Widget child = new TrailSegmentTile(
+      segment,
+      onPressed: () => onEditSegment(segment, index),
+    );
+
+    return new Draggable(
+      // Link the underlying element and the widget with a unique ID.
+      key: new ValueKey(child.hashCode),
+      childWhenDragging: new Opacity(opacity: 0.50, child: child),
+      maxSimultaneousDrags: 1,
+      feedback: new SizedBox(width: width, child: child),
+      data: index,
+      child: child,
+    );
+  }
+
+  Widget _buildDragTarget(final int idx) {
+    return new DragTarget<int>(
+      builder: (_, data, ___) {
+        return new SizedBox(
+          height: 20,
+          width: double.infinity,
+          child: new Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: ColoredBox(color: data.isNotEmpty ? AppColors.secondary : Colors.transparent),
+          ),
+        );
+      },
+      onAccept: (oldPos) {
+        onReorder(oldPos, idx);
+      },
     );
   }
 }

@@ -34,52 +34,60 @@ class _TrailSummaryState extends State<TrailSummary> {
 
   @override
   Widget build(BuildContext context) {
-    return new Card(
-      margin: const EdgeInsets.symmetric(horizontal: 1.5 * kMarginSize, vertical: kMarginSize),
-      shape: kRoundedBorder,
-      clipBehavior: Clip.hardEdge,
-      elevation: 3,
-      child: new Column(
-        children: [
-          _buildTitleText(),
-          if (expanded)
-            new Padding(
-              padding: const EdgeInsets.fromLTRB(2 * kMarginSize, kMarginSize, 2 * kMarginSize, 2 * kMarginSize),
-              child: new Row(
-                children: [
-                  new Expanded(child: _buildHdistWidget()),
-                  _kSpacingBetweenRow,
-                  new Expanded(child: _buildDaltWidget()),
-                  _kSpacingBetweenRow,
-                  new Expanded(child: _buildDurationWidget()),
-                ],
-              ),
+    return new Column(
+      children: [
+        _buildTitleText(),
+        if (expanded)
+          new Card(
+            margin: const EdgeInsets.symmetric(horizontal: 1.5 * kMarginSize, vertical: kMarginSize),
+            shape: kRoundedBorder,
+            clipBehavior: Clip.hardEdge,
+            elevation: 3,
+            child: new Column(
+              children: [
+                new Padding(
+                  padding: kMarginAllDouble,
+                  child: new Row(
+                    children: [
+                      new Expanded(child: _buildHdistWidget()),
+                      _kSpacingBetweenRow,
+                      new Expanded(child: _buildDaltWidget()),
+                      _kSpacingBetweenRow,
+                      new Expanded(child: _buildDurationWidget()),
+                    ],
+                  ),
+                ),
+              ],
             ),
-        ],
-      ),
+          )
+      ],
     );
   }
 
   Widget _buildTitleText() {
-    return new Row(
-      children: [
-        new SizedBox(width: kMinInteractiveDimension),
-        new Expanded(
-          child: new Text(
-            // TODO: Locale
-            "Resumen",
-            style: const TextStyle(fontSize: 22, color: Colors.blueGrey),
-            textAlign: TextAlign.center,
+    return new Padding(
+      padding: const EdgeInsets.only(top: 2 * kMarginSize, left: kMarginSize, right: kMarginSize),
+      child: new Row(
+        children: [
+          new SizedBox(width: 24),
+          new Expanded(
+            child: new Text(
+              // TODO: Locale
+              "Resumen",
+              style: const TextStyle(fontSize: 22, color: Colors.blueGrey),
+              textAlign: TextAlign.center,
+            ),
           ),
-        ),
-        new IconButton(
-            onPressed: () {
+          new GestureDetector(
+            child: Icon(expanded ? Icons.arrow_drop_up : Icons.arrow_drop_down),
+            onTap: () {
               setState(() {
                 expanded = !expanded;
               });
             },
-            icon: Icon(expanded ? Icons.arrow_drop_up : Icons.arrow_drop_down)),
-      ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -87,8 +95,8 @@ class _TrailSummaryState extends State<TrailSummary> {
     final double distance = widget.trail.distance;
     final double hdist = widget.trail.hdist;
     final String strDist =
-        distance > 1000 ? '${(distance / 1000).toStringAsFixed(2)} km' : '${distance.toStringAsFixed(0)} m';
-    final String strHdist = hdist > 1000 ? '${(hdist / 1000).toStringAsFixed(2)} km' : '${hdist.toStringAsFixed(0)} m';
+        distance > 1000 ? '${(distance / 1000).toStringAsFixed(1)} km' : '${distance.toStringAsFixed(0)} m';
+    final String strHdist = hdist > 1000 ? '${(hdist / 1000).toStringAsFixed(1)} km' : '${hdist.toStringAsFixed(0)} m';
 
     return new Column(
       mainAxisSize: MainAxisSize.min,
@@ -210,7 +218,7 @@ class TrailSegmentTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Card(
-      margin: kMarginAll,
+      margin: const EdgeInsets.all(2),
       shape: kRoundedBorder,
       clipBehavior: Clip.hardEdge,
       child: new InkWell(

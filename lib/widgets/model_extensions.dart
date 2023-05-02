@@ -28,9 +28,9 @@ extension FitnessLevelExtended on FitnessLevel {
       case FitnessLevel.sedentary:
         return 'Adulto sedentario o niño/a de 9-11 años.';
       case FitnessLevel.beginner:
-        return 'Adulto principiante o adolescente temprano de 12-14 años.';
+        return 'Adulto principiante o adolescente de 12-14 años.';
       case FitnessLevel.average:
-        return 'Adulto medio o adolescente tardío de 15-17 años.';
+        return 'Adulto medio o adolescente de 15-17 años.';
       case FitnessLevel.athletic:
         return 'Adulto deportista';
       default:
