@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:kilian/models/trail.dart';
 import 'package:kilian/widgets/painting.dart';
 import 'package:kilian/widgets/theme.dart';
 
 import './model_extensions.dart';
 import '../view-models/trail.dart';
+import 'basic.dart';
 
 const Widget _kSpacingHorizontalIcon = const SizedBox(width: 3);
 const Widget _kSpacingBetweenRow = const SizedBox(width: 5);
@@ -199,9 +201,11 @@ class _TrailSummaryState extends State<TrailSummary> {
 }
 
 class TrailSegmentTile extends StatelessWidget {
-  const TrailSegmentTile(this.segment, {super.key});
+  const TrailSegmentTile(this.segment, {this.onPressed, super.key});
 
   final TrailSegmentViewModel segment;
+
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -209,28 +213,31 @@ class TrailSegmentTile extends StatelessWidget {
       margin: kMarginAll,
       shape: kRoundedBorder,
       clipBehavior: Clip.hardEdge,
-      child: new SizedBox(
-        height: 70,
-        child: new Row(
-          children: [
-            _buildIndexIcon(),
-            new Expanded(
-              child: new Padding(
-                padding: const EdgeInsets.all(10),
-                child: new Row(
-                  children: [
-                    new Expanded(child: _buildHdistWidget()),
-                    _kSpacingBetweenRow,
-                    new Expanded(child: _buildDaltWidget()),
-                    _kSpacingBetweenRow,
-                    _buildMIDLevelWidget(),
-                    _kSpacingBetweenRow,
-                    new Expanded(child: _buildDurationWidget()),
-                  ],
+      child: new InkWell(
+        onTap: onPressed,
+        child: new SizedBox(
+          height: 70,
+          child: new Row(
+            children: [
+              _buildIndexIcon(),
+              new Expanded(
+                child: new Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: new Row(
+                    children: [
+                      new Expanded(child: _buildHdistWidget()),
+                      _kSpacingBetweenRow,
+                      new Expanded(child: _buildDaltWidget()),
+                      _kSpacingBetweenRow,
+                      _buildMIDLevelWidget(),
+                      _kSpacingBetweenRow,
+                      new Expanded(child: _buildDurationWidget()),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -441,5 +448,65 @@ class TrailSegmentTilesHeader extends StatelessWidget {
       style: const TextStyle(fontSize: 16, color: Colors.black54),
       textAlign: TextAlign.end,
     );
+  }
+}
+
+class MIDSelector extends StatelessWidget {
+  MIDSelector({required this.value, required this.onChanged, super.key});
+
+  /// The value of the currently selected [MIDLevel].
+  final MIDLevel? value;
+
+  /// Called when the user selects an item.
+  final ValueChanged<MIDLevel> onChanged;
+
+  final FocusNode _focus = new FocusNode();
+
+  @override
+  Widget build(BuildContext context) {
+    final List<DropdownMenuItem<MIDLevel>> items = MIDLevel.values
+        .map<DropdownMenuItem<MIDLevel>>((e) => new DropdownMenuItem<MIDLevel>(
+              value: e,
+              child: new Text(e.toStringLocalized(context), maxLines: 1),
+            ))
+        .toList();
+
+    final String tip =
+        MIDLevel.values.map((e) => "* ${e.toStringLocalized(context)}: ${e.getTipLocalized(context)}").join("\n");
+
+    return new SizedBox(
+      width: 150,
+      child: Row(
+        children: <Widget>[
+          new Flexible(
+            child: new DropdownButtonFormField(
+              focusNode: _focus,
+              isExpanded: true,
+              isDense: false,
+              decoration: const InputDecoration(
+                // TODO: Locale
+                labelText: "Nivel M.I.D.",
+                border: OutlineInputBorder(),
+                contentPadding: const EdgeInsets.only(left: 12),
+              ),
+              value: value,
+              items: items,
+              onChanged: (f) {
+                _focus.unfocus();
+                if (f != null) onChanged(f);
+              },
+              validator: (val) => _validator(context, val),
+            ),
+          ),
+          kSpacingHorizontal,
+          new TipWidget.info(tip: tip),
+        ],
+      ),
+    );
+  }
+
+  String? _validator(final BuildContext context, final MIDLevel? val) {
+    // TODO: Locale
+    return val == null ? 'Debes seleccionar una clasificación de M.I.D.' : null;
   }
 }

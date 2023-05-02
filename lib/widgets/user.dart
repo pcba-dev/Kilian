@@ -12,7 +12,7 @@ class FitnessSelector extends StatelessWidget {
   final FitnessLevel value;
 
   /// Called when the user selects an item.
-  final ValueChanged<FitnessLevel?> onChanged;
+  final ValueChanged<FitnessLevel> onChanged;
 
   final FocusNode _focus = new FocusNode();
 
@@ -49,7 +49,7 @@ class FitnessSelector extends StatelessWidget {
                 items: items,
                 onChanged: (f) {
                   _focus.unfocus();
-                  onChanged(f);
+                  if (f != null) onChanged(f);
                 },
               ),
             ),

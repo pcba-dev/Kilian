@@ -46,11 +46,11 @@ class TrailSegment {
 
   const TrailSegment.fromHdistAndDalt(this.hdist, this.dalt, this.mid);
 
-  /// Elevation gain.
-  final double dalt;
-
   /// Horizontal distance.
   final double hdist;
+
+  /// Elevation gain.
+  final double dalt;
 
   /// M.I.D. level
   final MIDLevel mid;
