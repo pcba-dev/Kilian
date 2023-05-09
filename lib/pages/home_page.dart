@@ -1,7 +1,4 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../models/calculator.dart';
 import '../models/trail.dart';
@@ -68,7 +65,7 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(),
         body: new Center(
           child: new ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 560),
+            constraints: const BoxConstraints(maxWidth: kMinWidthTablet),
             child: new _UserTrailView(
               userTrail,
               onFitnessChanged: (fitness) {
@@ -337,7 +334,7 @@ class _TrailSegmentDialogState extends State<TrailSegmentDialog> {
                         suffixText: "m",
                       ),
                       initialValue: widget.initial?.hdist.toInt(),
-                      precision: 5,
+                      precision: 4,
                       onChanged: (val) => hdist = double.tryParse(val) ?? 0,
                     ),
                   ),
@@ -353,7 +350,7 @@ class _TrailSegmentDialogState extends State<TrailSegmentDialog> {
                         suffixText: "m",
                       ),
                       initialValue: widget.initial?.dalt.toInt(),
-                      precision: 5,
+                      precision: 3,
                       onChanged: (val) => dalt = double.tryParse(val) ?? 0,
                     ),
                   ),

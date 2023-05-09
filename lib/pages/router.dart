@@ -60,8 +60,8 @@ extension GoRouterExtended on BuildContext {
       () {
         GoRouter.of(this).pushNamed(
           name,
-          params: params,
-          queryParams: queryParams,
+          pathParameters: params,
+          queryParameters: queryParams,
           extra: extra,
         );
       },
@@ -82,8 +82,8 @@ extension GoRouterExtended on BuildContext {
       () {
         GoRouter.of(this).pushNamed(
           name,
-          params: params,
-          queryParams: queryParams,
+          pathParameters: params,
+          queryParameters: queryParams,
           extra: extra,
         );
       },
