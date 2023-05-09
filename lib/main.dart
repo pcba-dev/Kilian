@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:kilian/pages/router.dart';
 
 import './widgets/theme.dart';
@@ -9,6 +10,7 @@ Future<void> main() async {
 
   await _initializeApp();
 
+  usePathUrlStrategy(); // Configure Flutter to use the URL path.
   runApp(const KilianApp());
 }
 

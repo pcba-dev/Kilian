@@ -391,7 +391,7 @@ class _TrailSegmentDialogState extends State<TrailSegmentDialog> {
                   }
                 }
               },
-              color: Colors.blueAccent,
+              color: Colors.blueAccent.shade100,
               icon: const Icon(Icons.save, size: 30),
             ),
           ],
