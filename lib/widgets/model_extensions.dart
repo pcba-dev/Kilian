@@ -32,7 +32,7 @@ extension FitnessLevelExtended on FitnessLevel {
       case FitnessLevel.average:
         return 'Adulto medio o adolescente de 15-17 años.';
       case FitnessLevel.athletic:
-        return 'Adulto deportista';
+        return 'Adulto deportista.';
       default:
         // Protection code.
         throw UnimplementedError(this.toString());

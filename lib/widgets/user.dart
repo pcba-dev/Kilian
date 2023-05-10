@@ -26,7 +26,7 @@ class FitnessSelector extends StatelessWidget {
         .toList();
 
     final String tip =
-        FitnessLevel.values.map((e) => "* ${e.toStringLocalized(context)}: ${e.getTipLocalized(context)}").join("\n");
+        FitnessLevel.values.map((e) => "• ${e.toStringLocalized(context)}: ${e.getTipLocalized(context)}").join("\n\n");
 
     return new Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2 * kMarginSize),
@@ -54,7 +54,7 @@ class FitnessSelector extends StatelessWidget {
               ),
             ),
             kSpacingHorizontal,
-            new TipWidget.info(tip: tip),
+            new TipWidget(tip: tip, forceDialog: true),
           ],
         ),
       ),

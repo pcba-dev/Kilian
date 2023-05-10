@@ -62,7 +62,6 @@ class _HomePageState extends State<HomePage> {
 
     return new SafeArea(
       child: new Scaffold(
-        appBar: AppBar(),
         body: new Center(
           child: new ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: kMinWidthTablet),

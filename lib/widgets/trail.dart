@@ -8,7 +8,7 @@ import '../view-models/trail.dart';
 import 'basic.dart';
 
 const Widget _kSpacingHorizontalIcon = const SizedBox(width: 3);
-const Widget _kSpacingBetweenRow = const SizedBox(width: 5);
+const Widget _kSpacingBetweenRow = const SizedBox(width: 8);
 
 const Widget _kVerticalSpacing = const SizedBox(height: 5);
 
@@ -194,7 +194,7 @@ class _TrailSummaryState extends State<TrailSummary> {
         new Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            new Icon(Icons.pause_circle, color: Colors.blueGrey, size: 22),
+            const Icon(Icons.pause_circle, color: Colors.blueGrey, size: 22),
             _kSpacingHorizontalIcon,
             new Text(
               widget.trail.resting.toHumanString(),
@@ -230,16 +230,17 @@ class TrailSegmentTile extends StatelessWidget {
               _buildIndexIcon(),
               new Expanded(
                 child: new Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: kMarginAll,
                   child: new Row(
                     children: [
-                      new Expanded(child: _buildHdistWidget()),
+                      new Expanded(flex: 9, child: _buildHdistWidget()),
                       _kSpacingBetweenRow,
-                      new Expanded(child: _buildDaltWidget()),
+                      new Expanded(flex: 8, child: _buildDaltWidget()),
                       _kSpacingBetweenRow,
                       _buildMIDLevelWidget(),
                       _kSpacingBetweenRow,
-                      new Expanded(child: _buildDurationWidget()),
+                      _kSpacingBetweenRow,
+                      new Expanded(flex: 10, child: _buildDurationWidget()),
                     ],
                   ),
                 ),
@@ -256,10 +257,10 @@ class TrailSegmentTile extends StatelessWidget {
       color: AppColors.secondary,
       child: new Center(
         child: new Padding(
-          padding: const EdgeInsets.all(10),
+          padding: kMarginAll,
           child: new Text(
             segment.index.toString(),
-            style: const TextStyle(fontSize: 18, color: Colors.black54),
+            style: const TextStyle(fontSize: 14, color: Colors.black54),
             textAlign: TextAlign.center,
           ),
         ),
@@ -284,11 +285,11 @@ class TrailSegmentTile extends StatelessWidget {
         new Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            new Icon(Icons.arrow_outward, color: Colors.brown, size: 22),
+            const Icon(Icons.arrow_outward, color: Colors.brown, size: 20),
             _kSpacingHorizontalIcon,
             new Text(
               strDist,
-              style: const TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 18),
               textAlign: TextAlign.end,
             ),
           ],
@@ -297,7 +298,7 @@ class TrailSegmentTile extends StatelessWidget {
         new Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            new Icon(Icons.start, color: Colors.blueGrey, size: 22),
+            new Icon(Icons.start, color: Colors.blueGrey, size: 20),
             _kSpacingHorizontalIcon,
             new Text(
               strHdist,
@@ -317,26 +318,27 @@ class TrailSegmentTile extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (segment.dalt.abs() > 0.1)
-          new Icon(segment.dalt > 0 ? Icons.arrow_upward : Icons.arrow_downward, color: Colors.cyan, size: 24),
+          new Icon(segment.dalt > 0 ? Icons.arrow_upward : Icons.arrow_downward, color: Colors.cyan, size: 22),
         _kSpacingHorizontalIcon,
         new Text(
           str,
-          style: const TextStyle(fontSize: 20),
+          style: const TextStyle(fontSize: 18),
         ),
       ],
     );
   }
 
   Widget _buildMIDLevelWidget() {
+    const double radius = 12.5;
     return SizedBox(
-      width: 30,
+      width: 2 * radius + 6,
       child: new Center(
         child: new DecoratedBox(
           decoration: new BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(12.5)),
+              borderRadius: const BorderRadius.all(Radius.circular(radius)),
               border: Border.all(color: segment.mid.color)),
           child: new SizedBox.square(
-            dimension: 25,
+            dimension: 2 * radius,
             child: new Center(
               child: new Text(
                 segment.mid.toNumber().toString(),
@@ -356,20 +358,36 @@ class TrailSegmentTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        new Text(
-          segment.duration.toHumanString(),
-          style: const TextStyle(fontSize: 20),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.end,
+        new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            const Icon(Icons.hiking, color: Colors.blueGrey, size: 16),
+            _kSpacingHorizontalIcon,
+            new Text(
+              segment.duration.toHumanString(),
+              style: const TextStyle(fontSize: 20),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.end,
+            ),
+          ],
         ),
         _kVerticalSpacing,
-        new Text(
-          segment.resting.toHumanString(),
-          style: const TextStyle(fontSize: 16, color: Colors.black38),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.end,
+        new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            new Icon(Icons.pause_circle, color: Colors.blueGrey, size: 16),
+            _kSpacingHorizontalIcon,
+            new Text(
+              segment.resting.toHumanString(),
+              style: const TextStyle(fontSize: 20, color: Colors.black38),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.end,
+            ),
+          ],
         ),
       ],
     );
@@ -391,13 +409,14 @@ class TrailSegmentTilesHeader extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: new Row(
                 children: [
-                  new Expanded(child: _buildHdistWidget()),
+                  new Expanded(flex: 9, child: _buildHdistWidget()),
                   _kSpacingBetweenRow,
-                  new Expanded(child: _buildDaltWidget()),
+                  new Expanded(flex: 8, child: _buildDaltWidget()),
                   _kSpacingBetweenRow,
                   _buildMIDLevelWidget(),
                   _kSpacingBetweenRow,
-                  new Expanded(child: _buildDurationWidget()),
+                  _kSpacingBetweenRow,
+                  new Expanded(flex: 10, child: _buildDurationWidget()),
                 ],
               ),
             ),
@@ -408,11 +427,11 @@ class TrailSegmentTilesHeader extends StatelessWidget {
   }
 
   Widget _buildIndexIcon() {
-    return new Center(
-      child: new Padding(
+    return const Center(
+      child: const Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: const Text(
-          "#",
+          '#',
           style: const TextStyle(fontSize: 16, color: Colors.black54),
         ),
       ),
@@ -480,7 +499,7 @@ class MIDSelector extends StatelessWidget {
         .toList();
 
     final String tip =
-        MIDLevel.values.map((e) => "* ${e.toStringLocalized(context)}: ${e.getTipLocalized(context)}").join("\n");
+        MIDLevel.values.map((e) => "• ${e.toStringLocalized(context)}: ${e.getTipLocalized(context)}").join("\n\n");
 
     return new SizedBox(
       width: 150,
@@ -507,7 +526,7 @@ class MIDSelector extends StatelessWidget {
             ),
           ),
           kSpacingHorizontal,
-          new TipWidget.info(tip: tip),
+          new TipWidget(tip: tip, forceDialog: true),
         ],
       ),
     );
