@@ -28,35 +28,32 @@ class FitnessSelector extends StatelessWidget {
     final String tip =
         FitnessLevel.values.map((e) => "• ${e.toStringLocalized(context)}: ${e.getTipLocalized(context)}").join("\n\n");
 
-    return new Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 2 * kMarginSize),
-      child: new SizedBox(
-        width: 150,
-        child: Row(
-          children: <Widget>[
-            new Flexible(
-              child: new DropdownButtonFormField(
-                focusNode: _focus,
-                isExpanded: true,
-                isDense: false,
-                decoration: const InputDecoration(
-                  // TODO: Locale
-                  labelText: "Condición física",
-                  border: OutlineInputBorder(),
-                  contentPadding: const EdgeInsets.only(left: 12),
-                ),
-                value: value,
-                items: items,
-                onChanged: (f) {
-                  _focus.unfocus();
-                  if (f != null) onChanged(f);
-                },
+    return new SizedBox(
+      width: 150,
+      child: Row(
+        children: <Widget>[
+          new Flexible(
+            child: new DropdownButtonFormField(
+              focusNode: _focus,
+              isExpanded: true,
+              isDense: false,
+              decoration: const InputDecoration(
+                // TODO: Locale
+                labelText: "Condición física",
+                border: OutlineInputBorder(),
+                contentPadding: const EdgeInsets.only(left: 12),
               ),
+              value: value,
+              items: items,
+              onChanged: (f) {
+                _focus.unfocus();
+                if (f != null) onChanged(f);
+              },
             ),
-            kSpacingHorizontal,
-            new TipWidget(tip: tip, forceDialog: true),
-          ],
-        ),
+          ),
+          kSpacingHorizontal,
+          new TipWidget(tip: tip, forceDialog: true),
+        ],
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:kilian/pages/settings_page.dart';
 import 'package:kilian/states/app_state.dart';
 
 import '../models/trail.dart';
@@ -20,6 +21,11 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return new SafeArea(
       child: new Scaffold(
+        appBar: new AppBar(
+          leading: _buildSettingButton(context),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
         body: new Center(
           child: new ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: kMinWidthTablet),
@@ -27,7 +33,6 @@ class HomePage extends StatelessWidget {
               return new _UserTrailView(
                 trail: store.state.trail,
                 params: store.state.parameters,
-                onFitnessChanged: _onChangeFitness,
                 onEditSegment: (s, i) => _onEditSegmentPressed(context, s, i),
                 onReorder: _onReorderSegment,
               );
@@ -43,14 +48,20 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void _onChangeFitness(final FitnessLevel? fitness) {
-    if (fitness != null) {
-      AppStore.instance.dispatch(new ChangeFitnessAction(fitness));
-    }
+  Widget _buildSettingButton(final BuildContext context) {
+    return new IconButton(
+      onPressed: () {
+        showDialog<void>(
+          context: context,
+          builder: (_) => const SettingsDialog(),
+        );
+      },
+      icon: const Icon(Icons.settings, color: Colors.blueGrey),
+    );
   }
 
-  Future<void> _onFloatingButtonPressed(final BuildContext context) async {
-    await showDialog<void>(
+  void _onFloatingButtonPressed(final BuildContext context) {
+    showDialog<void>(
       context: context,
       builder: (_) {
         return new TrailSegmentDialog(
@@ -62,8 +73,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Future<void> _onEditSegmentPressed(final BuildContext context, final TrailSegment segment, final int index) async {
-    await showDialog<void>(
+  void _onEditSegmentPressed(final BuildContext context, final TrailSegment segment, final int index) {
+    showDialog<void>(
       context: context,
       builder: (_) {
         return new TrailSegmentDialog(
@@ -90,7 +101,6 @@ class _UserTrailView extends StatelessWidget {
   const _UserTrailView({
     required this.trail,
     required this.params,
-    required this.onFitnessChanged,
     required this.onEditSegment,
     required this.onReorder,
     super.key,
@@ -99,8 +109,6 @@ class _UserTrailView extends StatelessWidget {
   final UserParameters params;
 
   final TrailViewModel trail;
-
-  final ValueChanged<FitnessLevel?> onFitnessChanged;
 
   final void Function(TrailSegment, int) onEditSegment;
 
@@ -117,14 +125,7 @@ class _UserTrailView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               new TrailSummary(trail),
-              kSpacingVerticalDouble,
-              new Align(
-                alignment: Alignment.centerRight,
-                child: new FitnessSelector(
-                  value: params.fitness,
-                  onChanged: onFitnessChanged,
-                ),
-              ),
+              kSpacingVertical,
               // Segments section title text.
               _buildSegmentsTitleText(),
               const TrailSegmentTilesHeader(),

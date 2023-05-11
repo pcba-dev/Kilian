@@ -34,20 +34,19 @@ class _TrailSummaryState extends State<TrailSummary> {
 
   @override
   Widget build(BuildContext context) {
-    return new Column(
-      children: [
-        _buildTitleText(),
-        if (expanded)
-          new Card(
-            margin: const EdgeInsets.symmetric(horizontal: 1.5 * kMarginSize, vertical: kMarginSize),
+    return expanded
+        ? new Card(
+            margin: const EdgeInsets.only(left: 1.5 * kMarginSize, right: 1.5 * kMarginSize, bottom: kMarginSize),
             shape: kRoundedBorder,
             clipBehavior: Clip.hardEdge,
             elevation: 3,
-            child: new Column(
-              children: [
-                new Padding(
-                  padding: kMarginAllDouble,
-                  child: new Row(
+            child: new Padding(
+              padding: kMarginAllDouble,
+              child: new Column(
+                children: [
+                  _buildTitleText(),
+                  kSpacingVerticalDouble,
+                  new Row(
                     children: [
                       new Expanded(child: _buildHdistWidget()),
                       _kSpacingBetweenRow,
@@ -56,38 +55,56 @@ class _TrailSummaryState extends State<TrailSummary> {
                       new Expanded(child: _buildDurationWidget()),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           )
+        : _buildCollapsedTitleText();
+  }
+
+  Widget _buildTitleText() {
+    return new Row(
+      children: [
+        new SizedBox(width: 24),
+        new Expanded(
+          child: new Text(
+            // TODO: Locale
+            "Resumen",
+            style: const TextStyle(fontSize: 22, color: Colors.blueGrey),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        _buildToggle(),
       ],
     );
   }
 
-  Widget _buildTitleText() {
+  Widget _buildCollapsedTitleText() {
     return new Padding(
-      padding: const EdgeInsets.only(top: 2 * kMarginSize, left: kMarginSize, right: kMarginSize),
+      padding: const EdgeInsets.symmetric(horizontal: 3 * kMarginSize),
       child: new Row(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          new SizedBox(width: 24),
-          new Expanded(
-            child: new Text(
-              // TODO: Locale
-              "Resumen",
-              style: const TextStyle(fontSize: 22, color: Colors.blueGrey),
-              textAlign: TextAlign.center,
-            ),
+          new Text(
+            // TODO: Locale
+            "Ver resumen",
+            style: const TextStyle(fontSize: 16, color: Colors.blueGrey),
+            textAlign: TextAlign.center,
           ),
-          new GestureDetector(
-            child: Icon(expanded ? Icons.arrow_drop_up : Icons.arrow_drop_down),
-            onTap: () {
-              setState(() {
-                expanded = !expanded;
-              });
-            },
-          ),
+          _buildToggle(),
         ],
       ),
+    );
+  }
+
+  Widget _buildToggle() {
+    return new GestureDetector(
+      child: Icon(expanded ? Icons.arrow_drop_up : Icons.arrow_drop_down),
+      onTap: () {
+        setState(() {
+          expanded = !expanded;
+        });
+      },
     );
   }
 
