@@ -139,11 +139,11 @@ class Trail<T extends TrailSegment> {
   int get hashCode => segments.hashCode;
 }
 
-/// M.I.D. level of a trail.dart segment.
+/// M.I.D. level of a trail segment.
 ///
 /// M.I.D. (Medium, Itinerary and Difficulty) is an evaluation system used among hikers
 /// to assess and express the technical and physical demands of the hikes.
-/// The M.I.D.(E.) system is recommended by the "Federation Española de Dedeportes de
+/// The M.I.D.(E.) system is recommended by the "Federation Española de Deportes de
 /// Montaña y Escalada" (F.E.D.M.E.).
 enum MIDLevel {
   easy, // Easy: Level 1

@@ -235,7 +235,7 @@ class TrailSegmentTile extends StatelessWidget {
                     children: [
                       new Expanded(flex: 9, child: _buildHdistWidget()),
                       _kSpacingBetweenRow,
-                      new Expanded(flex: 8, child: _buildDaltWidget()),
+                      new Expanded(flex: 9, child: _buildDaltWidget()),
                       _kSpacingBetweenRow,
                       _buildMIDLevelWidget(),
                       _kSpacingBetweenRow,
@@ -411,7 +411,7 @@ class TrailSegmentTilesHeader extends StatelessWidget {
                 children: [
                   new Expanded(flex: 9, child: _buildHdistWidget()),
                   _kSpacingBetweenRow,
-                  new Expanded(flex: 8, child: _buildDaltWidget()),
+                  new Expanded(flex: 9, child: _buildDaltWidget()),
                   _kSpacingBetweenRow,
                   _buildMIDLevelWidget(),
                   _kSpacingBetweenRow,

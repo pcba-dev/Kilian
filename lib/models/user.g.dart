@@ -6,26 +6,10 @@ part of 'user.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserTrail<T> _$UserTrailFromJson<T extends Trail<TrailSegment>>(
-  Map<String, dynamic> json,
-  T Function(Object? json) fromJsonT,
-) =>
-    UserTrail<T>(
-      trail: fromJsonT(json['trail']),
-      params: UserParameters.fromJson(json['params'] as Map<String, dynamic>),
-    );
-
-Map<String, dynamic> _$UserTrailToJson<T extends Trail<TrailSegment>>(
-  UserTrail<T> instance,
-  Object? Function(T value) toJsonT,
-) =>
-    <String, dynamic>{
-      'trail': toJsonT(instance.trail),
-      'params': instance.params,
-    };
-
 UserParameters _$UserParametersFromJson(Map<String, dynamic> json) =>
     UserParameters(
+      calculator: const TrailCalculatorJsonConverter()
+          .fromJson(json['calculator'] as Map<String, dynamic>),
       fitness: $enumDecodeNullable(_$FitnessLevelEnumMap, json['fitness']) ??
           FitnessLevel.average,
     );
@@ -33,6 +17,8 @@ UserParameters _$UserParametersFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$UserParametersToJson(UserParameters instance) =>
     <String, dynamic>{
       'fitness': _$FitnessLevelEnumMap[instance.fitness]!,
+      'calculator':
+          const TrailCalculatorJsonConverter().toJson(instance.calculator),
     };
 
 const _$FitnessLevelEnumMap = {

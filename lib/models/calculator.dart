@@ -1,21 +1,43 @@
 import 'dart:math' as math;
 
+import 'package:json_annotation/json_annotation.dart';
 import 'package:kilian/models/user.dart';
 
 import './trail.dart';
 
+@JsonSerializable()
 abstract class TrailCalculator {
-  const TrailCalculator({this.fitness = FitnessLevel.average});
+  const TrailCalculator();
 
-  final FitnessLevel fitness;
+  Duration computeDuration(final TrailSegment segment, {required final FitnessLevel fitness});
 
-  Duration computeDuration(final TrailSegment segment);
+  Duration computeResting(final TrailSegment segment, {required final FitnessLevel fitness});
+}
 
-  Duration computeResting(final TrailSegment segment);
+class TrailCalculatorJsonConverter implements JsonConverter<TrailCalculator, Map<String, dynamic>> {
+  const TrailCalculatorJsonConverter();
+
+  /// JSON serialization.
+  @override
+  TrailCalculator fromJson(Map<String, dynamic> json) {
+    final String type = json['type']! as String;
+    switch (type) {
+      case 'standard':
+      default:
+        return const StandardTrailCalculator();
+    }
+  }
+
+  @override
+  Map<String, dynamic> toJson(final TrailCalculator calculator) {
+    return <String, dynamic>{
+      'type': 'standard',
+    };
+  }
 }
 
 class StandardTrailCalculator extends TrailCalculator {
-  const StandardTrailCalculator({super.fitness});
+  const StandardTrailCalculator();
 
   /// Horizontal distance speed: 4km/h
   static const double _kHSpeed = 4000 / 60;
@@ -30,7 +52,7 @@ class StandardTrailCalculator extends TrailCalculator {
   static const double _kThresholdH = 50 / 1000;
 
   @override
-  Duration computeDuration(final TrailSegment segment) {
+  Duration computeDuration(final TrailSegment segment, {required final FitnessLevel fitness}) {
     // Compute the time portion required to cover the horizontal distance.
     final double hdistTime = segment.hdist / _kHSpeed;
 
@@ -58,14 +80,11 @@ class StandardTrailCalculator extends TrailCalculator {
   }
 
   @override
-  Duration computeResting(final TrailSegment segment) {
-    final Duration duration = computeDuration(segment);
+  Duration computeResting(final TrailSegment segment, {required final FitnessLevel fitness}) {
+    final Duration duration = computeDuration(segment, fitness: fitness);
 
     // Rest 10min every 1h.
-    double resting = duration.inMinutes / 6;
-
-    // Round to 5min slots.
-    resting = resting < 5 ? 0 : (resting / 5).round() * 5;
+    final double resting = duration.inMinutes / 6;
 
     return new Duration(minutes: resting.round());
   }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:kilian/states/app_state.dart';
 
-import '../models/calculator.dart';
 import '../models/trail.dart';
 import '../models/user.dart';
+import '../states/trail_action.dart';
+import '../states/user_parameters_action.dart';
 import '../view-models/trail.dart';
 import '../widgets/form_fields.dart';
 import '../widgets/painting.dart';
@@ -10,85 +13,43 @@ import '../widgets/theme.dart';
 import '../widgets/trail.dart';
 import '../widgets/user.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  Trail _trail = const Trail([]);
-
-  TrailCalculator calculator = const StandardTrailCalculator();
-
-  @override
-  void initState() {
-    super.initState();
-    _trail = const Trail([]);
-    calculator = const StandardTrailCalculator();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // Initialize total duration.
-    Duration totalDuration = Duration.zero;
-    Duration totalResting = Duration.zero;
-
-    final List<TrailSegmentViewModel> segments = [];
-    for (int i = 0; i < _trail.segments.length; ++i) {
-      final Duration duration = calculator.computeDuration(_trail.segments[i]);
-      final Duration resting = calculator.computeResting(_trail.segments[i]);
-      totalDuration += duration;
-      totalResting += resting;
-      segments.add(new TrailSegmentViewModel(
-        _trail.segments[i].hdist,
-        _trail.segments[i].dalt,
-        _trail.segments[i].mid,
-        index: i,
-        duration: duration,
-        resting: resting,
-      ));
-    }
-
-    // TODO
-    final TrailViewModel trail = new TrailViewModel(
-      segments,
-      duration: totalDuration,
-      resting: totalResting,
-    );
-
-    final UserTrail<TrailViewModel> userTrail = new UserTrail(trail: trail, params: new UserParameters());
-
     return new SafeArea(
       child: new Scaffold(
         body: new Center(
           child: new ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: kMinWidthTablet),
-            child: new _UserTrailView(
-              userTrail,
-              onFitnessChanged: (fitness) {
-                if (fitness != null) {
-                  setState(() {
-                    calculator = new StandardTrailCalculator(fitness: fitness);
-                  });
-                }
-              },
-              onEditSegment: _onEditSegmentPressed,
-              onReorder: _onReorderSegment,
-            ),
+            child: new StoreBuilder<AppState>(builder: (_, store) {
+              return new _UserTrailView(
+                trail: store.state.trail,
+                params: store.state.parameters,
+                onFitnessChanged: _onChangeFitness,
+                onEditSegment: (s, i) => _onEditSegmentPressed(context, s, i),
+                onReorder: _onReorderSegment,
+              );
+            }),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: new FloatingActionButton(
-          onPressed: _onFloatingButtonPressed,
+          onPressed: () => _onFloatingButtonPressed(context),
           child: const Icon(Icons.add),
         ),
       ),
     );
   }
 
-  Future<void> _onFloatingButtonPressed() async {
+  void _onChangeFitness(final FitnessLevel? fitness) {
+    if (fitness != null) {
+      AppStore.instance.dispatch(new ChangeFitnessAction(fitness));
+    }
+  }
+
+  Future<void> _onFloatingButtonPressed(final BuildContext context) async {
     final TrailSegment? segment = await showDialog<TrailSegment?>(
       context: context,
       builder: (_) {
@@ -97,14 +58,11 @@ class _HomePageState extends State<HomePage> {
     );
 
     if (segment != null) {
-      setState(() {
-        final List<TrailSegment> segments = new List.from(_trail.segments)..add(segment);
-        _trail = new Trail(segments);
-      });
+      AppStore.instance.dispatch(new AddSegmentAction(segment));
     }
   }
 
-  Future<void> _onEditSegmentPressed(final TrailSegment segment, final int index) async {
+  Future<void> _onEditSegmentPressed(final BuildContext context, final TrailSegment segment, final int index) async {
     final TrailSegment? newSegment = await showDialog<TrailSegment?>(
       context: context,
       builder: (_) {
@@ -113,39 +71,30 @@ class _HomePageState extends State<HomePage> {
     );
 
     if (newSegment != null) {
-      setState(() {
-        final List<TrailSegment> segments = new List.from(_trail.segments)
-          ..removeAt(index)
-          ..insert(index, newSegment);
-        _trail = new Trail(segments);
-      });
+      AppStore.instance.dispatch(new ReplaceSegmentAction(index, newSegment));
     }
   }
 
   void _onReorderSegment(final int oldPos, final int newPos) {
     if (newPos != oldPos && newPos != oldPos + 1) {
-      setState(() {
-        final List<TrailSegment> segments = new List.from(_trail.segments);
-
-        final TrailSegment segment = segments.removeAt(oldPos);
-        segments.insert(newPos > oldPos ? newPos - 1 : newPos, segment);
-
-        _trail = new Trail(segments);
-      });
+      AppStore.instance.dispatch(new ReorderSegmentAction(oldPos, newPos));
     }
   }
 }
 
 class _UserTrailView extends StatelessWidget {
-  const _UserTrailView(
-    this.userTrail, {
+  const _UserTrailView({
+    required this.trail,
+    required this.params,
     required this.onFitnessChanged,
     required this.onEditSegment,
     required this.onReorder,
     super.key,
   });
 
-  final UserTrail<TrailViewModel> userTrail;
+  final UserParameters params;
+
+  final TrailViewModel trail;
 
   final ValueChanged<FitnessLevel?> onFitnessChanged;
 
@@ -163,12 +112,12 @@ class _UserTrailView extends StatelessWidget {
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              new TrailSummary(userTrail.trail),
+              new TrailSummary(trail),
               kSpacingVerticalDouble,
               new Align(
                 alignment: Alignment.centerRight,
                 child: new FitnessSelector(
-                  value: userTrail.params.fitness,
+                  value: params.fitness,
                   onChanged: onFitnessChanged,
                 ),
               ),
@@ -213,25 +162,25 @@ class _UserTrailView extends StatelessWidget {
     final List<Widget> items = [];
 
     // Add a draggable target box at the end.
-    if (userTrail.trail.segments.length > 1) {
+    if (trail.segments.length > 1) {
       items.add(_buildDragTarget(0));
     } else {
       items.add(const SizedBox(height: 20)); // Spacing.
     }
 
-    for (int i = 0; i < userTrail.trail.segments.length * 2 - 1; ++i) {
+    for (int i = 0; i < trail.segments.length * 2 - 1; ++i) {
       final int index = (i / 2).floor();
       if (i.isOdd) {
         // Add the draggable target box.
         items.add(_buildDragTarget(index + 1));
       } else {
         // Add the draggable segment tile.
-        items.add(_buildDraggable(userTrail.trail.segments[index], index, width: width));
+        items.add(_buildDraggable(trail.segments[index], index, width: width));
       }
     }
     // Add a draggable target box at the end.
-    if (userTrail.trail.segments.length > 1) {
-      items.add(_buildDragTarget(userTrail.trail.segments.length));
+    if (trail.segments.length > 1) {
+      items.add(_buildDragTarget(trail.segments.length));
     }
 
     return items;
@@ -304,7 +253,7 @@ class _TrailSegmentDialogState extends State<TrailSegmentDialog> {
     super.initState();
     hdist = widget.initial?.hdist;
     dalt = widget.initial?.dalt;
-    mid = widget.initial?.mid;
+    mid = widget.initial?.mid ?? MIDLevel.moderate;
   }
 
   @override

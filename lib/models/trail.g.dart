@@ -24,8 +24,8 @@ TrailSegment _$TrailSegmentFromJson(Map<String, dynamic> json) => TrailSegment(
 
 Map<String, dynamic> _$TrailSegmentToJson(TrailSegment instance) =>
     <String, dynamic>{
-      'dalt': instance.dalt,
       'hdist': instance.hdist,
+      'dalt': instance.dalt,
       'mid': _$MIDLevelEnumMap[instance.mid]!,
     };
 

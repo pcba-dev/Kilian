@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:kilian/pages/router.dart';
+import 'package:kilian/states/app_state.dart';
 
 import './widgets/theme.dart';
 
@@ -24,12 +26,15 @@ class KilianApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Kilian',
-      routerConfig: kRouter,
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      supportedLocales: const [Locale('es', 'ES')],
-      theme: kTheme,
+    return new StoreProvider(
+      store: AppStore.instance,
+      child: MaterialApp.router(
+        title: 'Kilian',
+        routerConfig: kRouter,
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+        supportedLocales: const [Locale('es', 'ES')],
+        theme: kTheme,
+      ),
     );
   }
 }

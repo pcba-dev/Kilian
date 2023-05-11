@@ -13,6 +13,12 @@ dependencies:
   # For Json encoding and decoding.
   json_annotation: ^4.8.1
 
+  # Internationalization and localization facilities
+  intl: ^0.17.0
+
+  # Redux for Dart using generics for typed State
+  redux: ^5.0.0
+
   flutter:
     sdk: flutter
 
@@ -22,10 +28,11 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  intl: ^0.17.0
-
   # Declarative routes to regardless of the platform, handle deep and dynamic linking.
   go_router: ^7.0.0
+
+  # Utilities to consume a Redux Store to build Flutter Widgets.
+  flutter_redux: ^0.10.0
 
   # Responsive UI builder package.
   responsive_builder: ^0.6.4
