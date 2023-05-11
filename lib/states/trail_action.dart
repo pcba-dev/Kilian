@@ -12,12 +12,14 @@ Reducer<AppState> trailReducer = (
   final dynamic action,
 ) {
   late final TrailViewModel trail;
-  if (action is ReplaceSegmentAction) {
+  if (action is AddSegmentAction) {
+    trail = addSegmentReducer(previous, action);
+  } else if (action is RemoveSegmentAction) {
+    trail = removeSegmentReducer(previous, action);
+  } else if (action is ReplaceSegmentAction) {
     trail = replaceSegmentReducer(previous, action);
   } else if (action is ReorderSegmentAction) {
     trail = reorderSegmentsReducer(previous, action);
-  } else if (action is AddSegmentAction) {
-    trail = addSegmentReducer(previous, action);
   } else {
     trail = previous.trail;
   }
@@ -31,6 +33,20 @@ Reducer<AppState> trailReducer = (
 @immutable
 abstract class TrailAction extends AppAction {
   const TrailAction();
+}
+
+class AddSegmentAction extends TrailAction {
+  /// New segment data.
+  final TrailSegment segment;
+
+  const AddSegmentAction(this.segment);
+}
+
+class RemoveSegmentAction extends TrailAction {
+  /// Segment to be removed position index.
+  final int index;
+
+  const RemoveSegmentAction(this.index);
 }
 
 class ReplaceSegmentAction extends TrailAction {
@@ -53,11 +69,26 @@ class ReorderSegmentAction extends TrailAction {
   const ReorderSegmentAction(this.oldPos, this.newPos);
 }
 
-class AddSegmentAction extends TrailAction {
-  /// New segment data.
-  final TrailSegment segment;
+/// REDUCERS:
 
-  const AddSegmentAction(this.segment);
+/// REDUX reducer for [AddSegmentAction].
+TrailViewModel addSegmentReducer(
+  final AppState previous,
+  final AddSegmentAction action,
+) {
+  final List<TrailSegment> segments = new List.from(previous.trail.segments)..add(action.segment);
+
+  return utils.computeTrailView(params: previous.parameters, trail: new Trail(segments));
+}
+
+/// REDUX reducer for [RemoveSegmentAction].
+TrailViewModel removeSegmentReducer(
+  final AppState previous,
+  final RemoveSegmentAction action,
+) {
+  final List<TrailSegment> segments = new List.from(previous.trail.segments)..removeAt(action.index);
+
+  return utils.computeTrailView(params: previous.parameters, trail: new Trail(segments));
 }
 
 /// REDUX reducer for [ReplaceSegmentAction].
@@ -69,9 +100,7 @@ TrailViewModel replaceSegmentReducer(
     ..removeAt(action.index)
     ..insert(action.index, action.segment);
 
-  final Trail newTrail = new Trail(segments);
-
-  return utils.computeTrailView(params: previous.parameters, trail: newTrail);
+  return utils.computeTrailView(params: previous.parameters, trail: new Trail(segments));
 }
 
 /// REDUX reducer for [ReorderSegmentAction].
@@ -84,19 +113,5 @@ TrailViewModel reorderSegmentsReducer(
   final TrailSegment segment = segments.removeAt(action.oldPos);
   segments.insert(action.newPos > action.oldPos ? action.newPos - 1 : action.newPos, segment);
 
-  final Trail newTrail = new Trail(segments);
-
-  return utils.computeTrailView(params: previous.parameters, trail: newTrail);
-}
-
-/// REDUX reducer for [AddSegmentAction].
-TrailViewModel addSegmentReducer(
-  final AppState previous,
-  final AddSegmentAction action,
-) {
-  final List<TrailSegment> segments = new List.from(previous.trail.segments)..add(action.segment);
-
-  final Trail newTrail = new Trail(segments);
-
-  return utils.computeTrailView(params: previous.parameters, trail: newTrail);
+  return utils.computeTrailView(params: previous.parameters, trail: new Trail(segments));
 }

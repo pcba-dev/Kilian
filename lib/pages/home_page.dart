@@ -50,29 +50,33 @@ class HomePage extends StatelessWidget {
   }
 
   Future<void> _onFloatingButtonPressed(final BuildContext context) async {
-    final TrailSegment? segment = await showDialog<TrailSegment?>(
+    await showDialog<void>(
       context: context,
       builder: (_) {
-        return const TrailSegmentDialog();
+        return new TrailSegmentDialog(
+          onSavedPressed: (newSegment) {
+            AppStore.instance.dispatch(new AddSegmentAction(newSegment));
+          },
+        );
       },
     );
-
-    if (segment != null) {
-      AppStore.instance.dispatch(new AddSegmentAction(segment));
-    }
   }
 
   Future<void> _onEditSegmentPressed(final BuildContext context, final TrailSegment segment, final int index) async {
-    final TrailSegment? newSegment = await showDialog<TrailSegment?>(
+    await showDialog<void>(
       context: context,
       builder: (_) {
-        return new TrailSegmentDialog(initial: segment);
+        return new TrailSegmentDialog(
+          initial: segment,
+          onSavedPressed: (newSegment) {
+            AppStore.instance.dispatch(new ReplaceSegmentAction(index, newSegment));
+          },
+          onDeletePressed: () {
+            AppStore.instance.dispatch(new RemoveSegmentAction(index));
+          },
+        );
       },
     );
-
-    if (newSegment != null) {
-      AppStore.instance.dispatch(new ReplaceSegmentAction(index, newSegment));
-    }
   }
 
   void _onReorderSegment(final int oldPos, final int newPos) {
@@ -223,9 +227,13 @@ class _UserTrailView extends StatelessWidget {
 }
 
 class TrailSegmentDialog extends StatefulWidget {
-  const TrailSegmentDialog({super.key, this.initial});
+  const TrailSegmentDialog({required this.onSavedPressed, this.onDeletePressed, this.initial, super.key})
+      : assert(initial == null || (initial != null && onDeletePressed != null));
 
   final TrailSegment? initial;
+
+  final ValueSetter<TrailSegment> onSavedPressed;
+  final VoidCallback? onDeletePressed;
 
   @override
   State<TrailSegmentDialog> createState() => _TrailSegmentDialogState();
@@ -318,21 +326,25 @@ class _TrailSegmentDialogState extends State<TrailSegmentDialog> {
         new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            new IconButton(
-              onPressed: () {
-                // Pop the dialog.
-                Navigator.of(context).pop(null);
-              },
-              color: Colors.grey,
-              icon: const Icon(Icons.arrow_back, size: 30),
-            ),
+            if (widget.onDeletePressed != null)
+              new IconButton(
+                onPressed: () {
+                  widget.onDeletePressed!();
+                  Navigator.of(context).pop();
+                },
+                color: Colors.red.shade300,
+                icon: const Icon(Icons.delete_forever, size: 30),
+              )
+            else
+              const SizedBox(),
             new IconButton(
               onPressed: () {
                 final bool valid = formKey.currentState!.validate();
                 if (valid) {
                   if (hdist != null && dalt != null && mid != null) {
                     // Pop the dialog providing a new [TrailSegment].
-                    Navigator.of(context).pop(new TrailSegment(hdist!, dalt!, mid!));
+                    widget.onSavedPressed(new TrailSegment(hdist!, dalt!, mid!));
+                    Navigator.of(context).pop();
                   }
                 }
               },
