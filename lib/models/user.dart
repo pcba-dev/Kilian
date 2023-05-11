@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import './calculator.dart';
-import './trail.dart';
 
 part 'user.g.dart';
 

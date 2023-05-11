@@ -14,7 +14,7 @@ dependencies:
   json_annotation: ^4.8.1
 
   # Internationalization and localization facilities
-  intl: ^0.17.0
+  intl: ^0.18.0
 
   # Redux for Dart using generics for typed State
   redux: ^5.0.0
