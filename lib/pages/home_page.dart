@@ -3,16 +3,15 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:kilian/pages/settings_page.dart';
 import 'package:kilian/states/app_state.dart';
 
+import '../l10n/l10n.dart';
 import '../models/trail.dart';
 import '../models/user.dart';
 import '../states/trail_action.dart';
-import '../states/user_parameters_action.dart';
 import '../view-models/trail.dart';
 import '../widgets/form_fields.dart';
 import '../widgets/painting.dart';
 import '../widgets/theme.dart';
 import '../widgets/trail.dart';
-import '../widgets/user.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -127,7 +126,7 @@ class _UserTrailView extends StatelessWidget {
               new TrailSummary(trail),
               kSpacingVertical,
               // Segments section title text.
-              _buildSegmentsTitleText(),
+              _buildSegmentsTitleText(context),
               const TrailSegmentTilesHeader(),
               _buildDivider(),
               // Segments section.
@@ -142,12 +141,11 @@ class _UserTrailView extends StatelessWidget {
     });
   }
 
-  static Widget _buildSegmentsTitleText() {
+  static Widget _buildSegmentsTitleText(BuildContext context) {
     return new Padding(
-      padding: EdgeInsets.symmetric(horizontal: 2 * kMarginSize, vertical: kMarginSize),
+      padding: const EdgeInsets.symmetric(horizontal: 2 * kMarginSize, vertical: kMarginSize),
       child: new Text(
-        // TODO: Locale
-        "Etapas",
+        context.l10n.stagesTitle,
         style: const TextStyle(fontSize: 22, color: Colors.blueGrey),
       ),
     );
@@ -228,8 +226,7 @@ class _UserTrailView extends StatelessWidget {
 }
 
 class TrailSegmentDialog extends StatefulWidget {
-  const TrailSegmentDialog({required this.onSavedPressed, this.onDeletePressed, this.initial, super.key})
-      : assert(initial == null || (initial != null && onDeletePressed != null));
+  const TrailSegmentDialog({required this.onSavedPressed, this.onDeletePressed, this.initial, super.key});
 
   final TrailSegment? initial;
 
@@ -269,7 +266,10 @@ class _TrailSegmentDialogState extends State<TrailSegmentDialog> {
   Widget build(BuildContext context) {
     return SimpleDialog(
       contentPadding: kMarginAllDouble,
-      title: new Text(_editMode ? "Editar tramo" : "Crear tramo", textAlign: TextAlign.center),
+      title: new Text(
+        _editMode ? context.l10n.segmentEditDialogTitleEdit : context.l10n.segmentEditDialogTitleCreate,
+        textAlign: TextAlign.center,
+      ),
       children: [
         new Form(
           key: formKey,
@@ -284,9 +284,8 @@ class _TrailSegmentDialogState extends State<TrailSegmentDialog> {
                       signed: false,
                       textInputAction: TextInputAction.next,
                       decoration: new InputDecoration(
-                        // TODO: Locale
-                        labelText: "Distancia horizontal",
-                        hintText: "Distancia",
+                        labelText: context.l10n.horizontalDistanceLabel,
+                        hintText: context.l10n.horizontalDistanceHint,
                         border: _kInputBorder,
                         suffixText: "m",
                       ),
@@ -300,9 +299,8 @@ class _TrailSegmentDialogState extends State<TrailSegmentDialog> {
                     child: new NumberFormField.int(
                       textInputAction: TextInputAction.next,
                       decoration: new InputDecoration(
-                        // TODO: Locale
-                        labelText: "Desnivel",
-                        hintText: "d+ / d-",
+                        labelText: context.l10n.daltitudeLabel,
+                        hintText: context.l10n.daltitudeHint,
                         border: _kInputBorder,
                         suffixText: "m",
                       ),

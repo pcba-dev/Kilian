@@ -3,9 +3,10 @@ import 'package:kilian/models/trail.dart';
 import 'package:kilian/widgets/painting.dart';
 import 'package:kilian/widgets/theme.dart';
 
+import './basic.dart';
 import './model_extensions.dart';
+import '../l10n/l10n.dart';
 import '../view-models/trail.dart';
-import 'basic.dart';
 
 const Widget _kSpacingHorizontalIcon = const SizedBox(width: 3);
 const Widget _kSpacingBetweenRow = const SizedBox(width: 8);
@@ -44,7 +45,7 @@ class _TrailSummaryState extends State<TrailSummary> {
               padding: kMarginAllDouble,
               child: new Column(
                 children: [
-                  _buildTitleText(),
+                  _buildTitleText(context),
                   kSpacingVerticalDouble,
                   new Row(
                     children: [
@@ -59,17 +60,16 @@ class _TrailSummaryState extends State<TrailSummary> {
               ),
             ),
           )
-        : _buildCollapsedTitleText();
+        : _buildCollapsedTitleText(context);
   }
 
-  Widget _buildTitleText() {
+  Widget _buildTitleText(BuildContext context) {
     return new Row(
       children: [
         new SizedBox(width: 24),
         new Expanded(
           child: new Text(
-            // TODO: Locale
-            "Resumen",
+            context.l10n.trailSummaryTitle,
             style: const TextStyle(fontSize: 22, color: Colors.blueGrey),
             textAlign: TextAlign.center,
           ),
@@ -79,15 +79,14 @@ class _TrailSummaryState extends State<TrailSummary> {
     );
   }
 
-  Widget _buildCollapsedTitleText() {
+  Widget _buildCollapsedTitleText(BuildContext context) {
     return new Padding(
       padding: const EdgeInsets.symmetric(horizontal: 3 * kMarginSize),
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           new Text(
-            // TODO: Locale
-            "Ver resumen",
+            context.l10n.trailSummaryLabel,
             style: const TextStyle(fontSize: 16, color: Colors.blueGrey),
             textAlign: TextAlign.center,
           ),
@@ -163,7 +162,7 @@ class _TrailSummaryState extends State<TrailSummary> {
         new Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            new Icon(Icons.arrow_upward, color: Colors.cyan, size: 22),
+            const Icon(Icons.arrow_upward, color: Colors.cyan, size: 22),
             _kSpacingHorizontalIcon,
             new Text(
               strDplus,
@@ -176,7 +175,7 @@ class _TrailSummaryState extends State<TrailSummary> {
         new Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            new Icon(Icons.arrow_downward, color: Colors.cyan, size: 22),
+            const Icon(Icons.arrow_downward, color: Colors.cyan, size: 22),
             _kSpacingHorizontalIcon,
             new Text(
               strDminus,
@@ -198,7 +197,7 @@ class _TrailSummaryState extends State<TrailSummary> {
         new Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            new Icon(Icons.hiking, color: Colors.black, size: 26),
+            const Icon(Icons.hiking, color: Colors.black, size: 26),
             _kSpacingHorizontalIcon,
             new Text(
               widget.trail.duration.toHumanString(),
@@ -286,7 +285,6 @@ class TrailSegmentTile extends StatelessWidget {
   }
 
   Widget _buildHdistWidget() {
-    // TODO
     final String strDist = segment.distance > 1000
         ? '${(segment.distance / 1000).toStringAsFixed(2)} km'
         : '${segment.distance.toStringAsFixed(0)} m';
@@ -315,7 +313,7 @@ class TrailSegmentTile extends StatelessWidget {
         new Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            new Icon(Icons.start, color: Colors.blueGrey, size: 20),
+            const Icon(Icons.start, color: Colors.blueGrey, size: 20),
             _kSpacingHorizontalIcon,
             new Text(
               strHdist,
@@ -395,7 +393,7 @@ class TrailSegmentTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: [
-            new Icon(Icons.pause_circle, color: Colors.blueGrey, size: 16),
+            const Icon(Icons.pause_circle, color: Colors.blueGrey, size: 16),
             _kSpacingHorizontalIcon,
             new Text(
               segment.resting.toHumanString(),
@@ -426,14 +424,14 @@ class TrailSegmentTilesHeader extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: new Row(
                 children: [
-                  new Expanded(flex: 9, child: _buildHdistWidget()),
+                  new Expanded(flex: 9, child: _buildHdistWidget(context)),
                   _kSpacingBetweenRow,
-                  new Expanded(flex: 9, child: _buildDaltWidget()),
+                  new Expanded(flex: 9, child: _buildDaltWidget(context)),
                   _kSpacingBetweenRow,
                   _buildMIDLevelWidget(),
                   _kSpacingBetweenRow,
                   _kSpacingBetweenRow,
-                  new Expanded(flex: 10, child: _buildDurationWidget()),
+                  new Expanded(flex: 10, child: _buildDurationWidget(context)),
                 ],
               ),
             ),
@@ -455,18 +453,16 @@ class TrailSegmentTilesHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildHdistWidget() {
+  Widget _buildHdistWidget(final BuildContext context) {
     return new Text(
-      // TODO: Locale
-      "Distancia",
+      context.l10n.horizontalDistanceHint,
       style: const TextStyle(fontSize: 16, color: Colors.black54),
     );
   }
 
-  Widget _buildDaltWidget() {
+  Widget _buildDaltWidget(final BuildContext context) {
     return new Text(
-      // TODO: Locale
-      "d+ / d-",
+      context.l10n.daltitudeHint,
       style: const TextStyle(fontSize: 16, color: Colors.black54),
       textAlign: TextAlign.center,
     );
@@ -476,7 +472,7 @@ class TrailSegmentTilesHeader extends StatelessWidget {
     return SizedBox(
       width: 30,
       child: new Center(
-        child: new Text(
+        child: const Text(
           "M.I.D.",
           style: const TextStyle(fontSize: 10),
           textAlign: TextAlign.center,
@@ -485,10 +481,9 @@ class TrailSegmentTilesHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildDurationWidget() {
+  Widget _buildDurationWidget(final BuildContext context) {
     return new Text(
-      // TODO: Locale
-      "Tiempo",
+      context.l10n.timeLabel,
       style: const TextStyle(fontSize: 16, color: Colors.black54),
       textAlign: TextAlign.end,
     );
@@ -527,10 +522,9 @@ class MIDSelector extends StatelessWidget {
               focusNode: _focus,
               isExpanded: true,
               isDense: false,
-              decoration: const InputDecoration(
-                // TODO: Locale
-                labelText: "Nivel M.I.D.",
-                border: OutlineInputBorder(),
+              decoration: new InputDecoration(
+                labelText: context.l10n.midLevelLabel,
+                border: const OutlineInputBorder(),
                 contentPadding: const EdgeInsets.only(left: 12),
               ),
               value: value,
@@ -550,7 +544,6 @@ class MIDSelector extends StatelessWidget {
   }
 
   String? _validator(final BuildContext context, final MIDLevel? val) {
-    // TODO: Locale
-    return val == null ? 'Debes seleccionar una clasificación de M.I.D.' : null;
+    return val == null ? context.l10n.midSelectorValidationError : null;
   }
 }

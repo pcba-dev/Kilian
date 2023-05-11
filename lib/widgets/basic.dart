@@ -38,7 +38,7 @@ class _WebTipWidget extends StatelessWidget {
       message: tip,
       textStyle: const TextStyle(fontSize: 15, color: Colors.white),
       triggerMode: TooltipTriggerMode.tap,
-      decoration: BoxDecoration(color: Colors.grey),
+      decoration: const BoxDecoration(color: Colors.grey),
       child: const Icon(Icons.info_outline, color: Colors.blueGrey, size: 20),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:kilian/models/user.dart';
 
+import '../l10n/l10n.dart';
 import '../states/app_state.dart';
 import '../states/user_parameters_action.dart';
 import '../widgets/painting.dart';
@@ -17,8 +18,7 @@ class SettingsDialog extends StatelessWidget {
       builder: (_, params) {
         return new SimpleDialog(
           contentPadding: const EdgeInsets.symmetric(horizontal: 2 * kMarginSize, vertical: 3 * kMarginSize),
-          // TODO: Locale
-          title: new Text("Configuración", textAlign: TextAlign.center),
+          title: new Text(context.l10n.settingsTitle, textAlign: TextAlign.center),
           children: [
             new FitnessSelector(
               value: params.fitness,

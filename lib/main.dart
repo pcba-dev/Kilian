@@ -6,6 +6,7 @@ import 'package:kilian/pages/router.dart';
 import 'package:kilian/states/app_state.dart';
 
 import './widgets/theme.dart';
+import 'l10n/l10n.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,8 +32,13 @@ class KilianApp extends StatelessWidget {
       child: MaterialApp.router(
         title: 'Kilian',
         routerConfig: kRouter,
-        localizationsDelegates: GlobalMaterialLocalizations.delegates,
-        supportedLocales: const [Locale('es', 'ES')],
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
         theme: kTheme,
       ),
     );

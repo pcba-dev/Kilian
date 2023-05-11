@@ -3,6 +3,7 @@ import 'package:kilian/widgets/basic.dart';
 import 'package:kilian/widgets/painting.dart';
 
 import './model_extensions.dart';
+import '../l10n/l10n.dart';
 import '../models/user.dart';
 
 class FitnessSelector extends StatelessWidget {
@@ -37,10 +38,9 @@ class FitnessSelector extends StatelessWidget {
               focusNode: _focus,
               isExpanded: true,
               isDense: false,
-              decoration: const InputDecoration(
-                // TODO: Locale
-                labelText: "Condición física",
-                border: OutlineInputBorder(),
+              decoration: new InputDecoration(
+                labelText: context.l10n.fitnessLabel,
+                border: const OutlineInputBorder(),
                 contentPadding: const EdgeInsets.only(left: 12),
               ),
               value: value,

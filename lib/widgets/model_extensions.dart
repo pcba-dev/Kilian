@@ -1,38 +1,37 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/l10n.dart';
 import '../models/trail.dart';
 import '../models/user.dart';
 
 extension FitnessLevelExtended on FitnessLevel {
   String toStringLocalized(BuildContext context) {
-    // TODO: Locale
     switch (this) {
       case FitnessLevel.child:
-        return 'Infantil';
+        return context.l10n.fitnessChild;
       case FitnessLevel.sedentary:
-        return 'Sedentario';
+        return context.l10n.fitnessSedentary;
       case FitnessLevel.beginner:
-        return 'Principiante';
+        return context.l10n.fitnessBeginner;
       case FitnessLevel.average:
-        return 'Promedio';
+        return context.l10n.fitnessAverage;
       case FitnessLevel.athletic:
-        return 'Deportista';
+        return context.l10n.fitnessAthletic;
     }
   }
 
   String getTipLocalized(BuildContext context) {
-    // TODO: Locale
     switch (this) {
       case FitnessLevel.child:
-        return 'Niño/a de 6-8 años.';
+        return context.l10n.fitnessChildTip;
       case FitnessLevel.sedentary:
-        return 'Adulto sedentario o niño/a de 9-11 años.';
+        return context.l10n.fitnessSedentaryTip;
       case FitnessLevel.beginner:
-        return 'Adulto principiante o adolescente de 12-14 años.';
+        return context.l10n.fitnessBeginnerTip;
       case FitnessLevel.average:
-        return 'Adulto medio o adolescente de 15-17 años.';
+        return context.l10n.fitnessAverageTip;
       case FitnessLevel.athletic:
-        return 'Adulto deportista.';
+        return context.l10n.fitnessAthleticTip;
       default:
         // Protection code.
         throw UnimplementedError(this.toString());
@@ -78,34 +77,32 @@ extension MIDLevelExtended on MIDLevel {
   }
 
   String toStringLocalized(BuildContext context) {
-    // TODO: Locale
     switch (this) {
       case MIDLevel.easy:
-        return 'Fácil';
+        return context.l10n.midLevelEasy;
       case MIDLevel.moderate:
-        return 'Moderado';
+        return context.l10n.midLevelModerate;
       case MIDLevel.challenging:
-        return 'Exigente';
+        return context.l10n.midLevelChallenging;
       case MIDLevel.hard:
-        return 'Complicado';
+        return context.l10n.midLevelHard;
       case MIDLevel.extreme:
-        return 'Extremo';
+        return context.l10n.midLevelExtreme;
     }
   }
 
   String getTipLocalized(BuildContext context) {
-    // TODO: Locale
     switch (this) {
       case MIDLevel.easy:
-        return 'Medio exento de riesgos, caminos y cruces bien definidos, marcha por superficie lisa.';
+        return context.l10n.midLevelEasyTip;
       case MIDLevel.moderate:
-        return 'Hay algún factor de riesgo, señalización que indica la continuidad, marcha por caminos de firme regular.';
+        return context.l10n.midLevelModerateTip;
       case MIDLevel.challenging:
-        return 'Hay varios factor de riesgo, exige la identificación de accidentes geográficos y puntos del itinerario, Marcha por sendas escalonadas o terreno irregular.';
+        return context.l10n.midLevelChallengingTip;
       case MIDLevel.hard:
-        return 'Hay bastantes factores de riesgo, técnicas de orientación y navegación fuera de traza, precisa usar de las manos para mantener el equilibrio.';
+        return context.l10n.midLevelHardTip;
       case MIDLevel.extreme:
-        return 'Hay muchos factores de riesgo, la navegación es interrumpida por obstáculos que hay que bordear, requiere pasos de escalada para la progresión.';
+        return context.l10n.midLevelExtremeTip;
       default:
         // Protection code.
         throw UnimplementedError(this.toString());
