@@ -132,8 +132,9 @@ class _UserTrailView extends StatelessWidget {
               // Segments section.
               new Expanded(
                 child: new ListView(
-                  padding: const EdgeInsets.fromLTRB(kMarginSize, 0, kMarginSize, 70),
-                  children: _buildListItems(width: constraints.maxWidth - 2 * kMarginSize),
+                  padding: const EdgeInsets.fromLTRB(
+                      kMarginSize, 0, kMarginSize, 70),
+                  children: _buildListItems(),
                 ),
               )
             ],
@@ -161,7 +162,7 @@ class _UserTrailView extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildListItems({required final double width}) {
+  List<Widget> _buildListItems() {
     final List<Widget> items = [];
 
     // Add a draggable target box at the end.
@@ -178,7 +179,11 @@ class _UserTrailView extends StatelessWidget {
         items.add(_buildDragTarget(index + 1));
       } else {
         // Add the draggable segment tile.
-        items.add(_buildDraggable(trail.segments[index], index, width: width));
+        items.add(new DraggableTrailSegmentTile(
+          segment: trail.segments[index],
+          index: index,
+          onPressed: () => onEditSegment(trail.segments[index], index),
+        ));
       }
     }
     // Add a draggable target box at the end.
@@ -189,32 +194,17 @@ class _UserTrailView extends StatelessWidget {
     return items;
   }
 
-  Widget _buildDraggable(final TrailSegmentViewModel segment, final int index, {required final double width}) {
-    final Widget child = new TrailSegmentTile(
-      segment,
-      onPressed: () => onEditSegment(segment, index),
-    );
-
-    return new Draggable(
-      // Link the underlying element and the widget with a unique ID.
-      key: new ValueKey(child.hashCode),
-      childWhenDragging: new Opacity(opacity: 0.50, child: child),
-      maxSimultaneousDrags: 1,
-      feedback: new SizedBox(width: width, child: child),
-      data: index,
-      child: child,
-    );
-  }
-
   Widget _buildDragTarget(final int idx) {
     return new DragTarget<int>(
       builder: (_, data, ___) {
         return new SizedBox(
-          height: 20,
+          height: 12,
           width: double.infinity,
           child: new Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: ColoredBox(color: data.isNotEmpty ? AppColors.secondary : Colors.transparent),
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: ColoredBox(
+                color:
+                    data.isNotEmpty ? AppColors.secondary : Colors.transparent),
           ),
         );
       },

@@ -13,6 +13,9 @@ const Widget _kSpacingBetweenRow = const SizedBox(width: 8);
 
 const Widget _kVerticalSpacing = const SizedBox(height: 5);
 
+const double _kSegmentTileHeight = 75;
+const double _kSegmentIndexIndicatorWidth = 25;
+
 class TrailSummary extends StatefulWidget {
   const TrailSummary(this.trail, {this.action, super.key});
 
@@ -49,11 +52,11 @@ class _TrailSummaryState extends State<TrailSummary> {
                   kSpacingVerticalDouble,
                   new Row(
                     children: [
-                      new Expanded(child: _buildHdistWidget()),
+                      new Expanded(flex: 4, child: _buildHdistWidget()),
                       _kSpacingBetweenRow,
-                      new Expanded(child: _buildDaltWidget()),
+                      new Expanded(flex: 4, child: _buildDaltWidget()),
                       _kSpacingBetweenRow,
-                      new Expanded(child: _buildDurationWidget()),
+                      new Expanded(flex: 5, child: _buildDurationWidget()),
                     ],
                   ),
                 ],
@@ -126,7 +129,7 @@ class _TrailSummaryState extends State<TrailSummary> {
             _kSpacingHorizontalIcon,
             new Text(
               strDist,
-              style: const TextStyle(fontSize: 24),
+              style: const TextStyle(fontSize: 20),
               textAlign: TextAlign.end,
             ),
           ],
@@ -139,7 +142,7 @@ class _TrailSummaryState extends State<TrailSummary> {
             _kSpacingHorizontalIcon,
             new Text(
               strHdist,
-              style: const TextStyle(fontSize: 20, color: Colors.black38),
+              style: const TextStyle(fontSize: 18, color: Colors.black38),
               textAlign: TextAlign.end,
             ),
           ],
@@ -166,7 +169,7 @@ class _TrailSummaryState extends State<TrailSummary> {
             _kSpacingHorizontalIcon,
             new Text(
               strDplus,
-              style: const TextStyle(fontSize: 22),
+              style: const TextStyle(fontSize: 20),
               textAlign: TextAlign.end,
             ),
           ],
@@ -179,7 +182,7 @@ class _TrailSummaryState extends State<TrailSummary> {
             _kSpacingHorizontalIcon,
             new Text(
               strDminus,
-              style: const TextStyle(fontSize: 22),
+              style: const TextStyle(fontSize: 20),
               textAlign: TextAlign.end,
             ),
           ],
@@ -224,8 +227,124 @@ class _TrailSummaryState extends State<TrailSummary> {
   }
 }
 
+class DraggableTrailSegmentTile extends StatelessWidget {
+  const DraggableTrailSegmentTile({
+    required this.segment,
+    required this.index,
+    this.onPressed,
+    super.key,
+  });
+
+  final TrailSegmentViewModel segment;
+
+  final int index;
+
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return new LayoutBuilder(builder: (_, constraints) {
+      final Widget child = new TrailSegmentTile(
+        segment: segment,
+        index: index,
+        onPressed: onPressed,
+      );
+
+      return new Stack(
+        children: [
+          child,
+          new Positioned(
+            left: 2,
+            child: new Draggable(
+              // Link the underlying element and the widget with a unique ID.
+              key: new ValueKey(child.hashCode),
+              childWhenDragging: new SizedBox(
+                width: constraints.maxWidth,
+                height: _kSegmentTileHeight,
+                child: const ColoredBox(color: Colors.white38),
+              ),
+              maxSimultaneousDrags: 1,
+              feedback: new SizedBox(width: constraints.maxWidth, child: child),
+              data: index,
+              child: const SizedBox(
+                height: _kSegmentTileHeight,
+                width: _kSegmentIndexIndicatorWidth,
+                child: const ColoredBox(color: Colors.transparent),
+              ),
+            ),
+          )
+        ],
+      );
+    });
+  }
+}
+
 class TrailSegmentTile extends StatelessWidget {
-  const TrailSegmentTile(this.segment, {this.onPressed, super.key});
+  const TrailSegmentTile({
+    required this.segment,
+    required this.index,
+    this.onPressed,
+    super.key,
+  });
+
+  final TrailSegmentViewModel segment;
+
+  final int index;
+
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return new SizedBox(
+      height: _kSegmentTileHeight,
+      child: new Card(
+        margin: const EdgeInsets.all(2),
+        shape: kRoundedBorder,
+        clipBehavior: Clip.hardEdge,
+        child: new Row(
+          children: [
+            new _SegmentIndexIndicator(index: index + 1),
+            new Expanded(
+              child: new _TrailSegmentInfo(segment, onPressed: onPressed),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SegmentIndexIndicator extends StatelessWidget {
+  const _SegmentIndexIndicator({
+    required this.index,
+    super.key,
+  });
+
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return new ColoredBox(
+      color: AppColors.secondary,
+      child: new SizedBox(
+        width: _kSegmentIndexIndicatorWidth,
+        child: new Center(
+          child: new Padding(
+            padding: kMarginAll,
+            child: new Text(
+              index.toString(),
+              style: const TextStyle(fontSize: 14, color: Colors.black54),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TrailSegmentInfo extends StatelessWidget {
+  const _TrailSegmentInfo(this.segment, {this.onPressed, super.key});
 
   final TrailSegmentViewModel segment;
 
@@ -233,52 +352,21 @@ class TrailSegmentTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Card(
-      margin: const EdgeInsets.all(2),
-      shape: kRoundedBorder,
-      clipBehavior: Clip.hardEdge,
-      child: new InkWell(
-        onTap: onPressed,
-        child: new SizedBox(
-          height: 70,
-          child: new Row(
-            children: [
-              _buildIndexIcon(),
-              new Expanded(
-                child: new Padding(
-                  padding: kMarginAll,
-                  child: new Row(
-                    children: [
-                      new Expanded(flex: 9, child: _buildHdistWidget()),
-                      _kSpacingBetweenRow,
-                      new Expanded(flex: 9, child: _buildDaltWidget()),
-                      _kSpacingBetweenRow,
-                      _buildMIDLevelWidget(),
-                      _kSpacingBetweenRow,
-                      _kSpacingBetweenRow,
-                      new Expanded(flex: 10, child: _buildDurationWidget()),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildIndexIcon() {
-    return new ColoredBox(
-      color: AppColors.secondary,
-      child: new Center(
-        child: new Padding(
-          padding: kMarginAll,
-          child: new Text(
-            segment.index.toString(),
-            style: const TextStyle(fontSize: 14, color: Colors.black54),
-            textAlign: TextAlign.center,
-          ),
+    return new InkWell(
+      onTap: onPressed,
+      child: new Padding(
+        padding: kMarginAll,
+        child: new Row(
+          children: [
+            new Expanded(flex: 4, child: _buildHdistWidget()),
+            _kSpacingBetweenRow,
+            new Expanded(flex: 4, child: _buildDaltWidget()),
+            _kSpacingBetweenRow,
+            _buildMIDLevelWidget(),
+            _kSpacingBetweenRow,
+            _kSpacingBetweenRow,
+            new Expanded(flex: 5, child: _buildDurationWidget()),
+          ],
         ),
       ),
     );
@@ -300,11 +388,11 @@ class TrailSegmentTile extends StatelessWidget {
         new Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.arrow_outward, color: Colors.brown, size: 20),
+            const Icon(Icons.arrow_outward, color: Colors.brown, size: 16),
             _kSpacingHorizontalIcon,
             new Text(
               strDist,
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 17),
               textAlign: TextAlign.end,
             ),
           ],
@@ -313,7 +401,7 @@ class TrailSegmentTile extends StatelessWidget {
         new Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.start, color: Colors.blueGrey, size: 20),
+            const Icon(Icons.start, color: Colors.blueGrey, size: 16),
             _kSpacingHorizontalIcon,
             new Text(
               strHdist,
@@ -333,11 +421,12 @@ class TrailSegmentTile extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (segment.dalt.abs() > 0.1)
-          new Icon(segment.dalt > 0 ? Icons.arrow_upward : Icons.arrow_downward, color: Colors.cyan, size: 22),
+          new Icon(segment.dalt > 0 ? Icons.arrow_upward : Icons.arrow_downward,
+              color: Colors.cyan, size: 16),
         _kSpacingHorizontalIcon,
         new Text(
           str,
-          style: const TextStyle(fontSize: 18),
+          style: const TextStyle(fontSize: 17),
         ),
       ],
     );
@@ -357,7 +446,10 @@ class TrailSegmentTile extends StatelessWidget {
             child: new Center(
               child: new Text(
                 segment.mid.toNumber().toString(),
-                style: new TextStyle(fontSize: 16, color: segment.mid.color, fontWeight: FontWeight.bold),
+                style: new TextStyle(
+                    fontSize: 16,
+                    color: segment.mid.color,
+                    fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ),

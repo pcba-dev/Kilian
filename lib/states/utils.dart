@@ -37,7 +37,6 @@ TrailViewModel computeTrailView({required final UserParameters params, required 
       trail.segments[i].hdist,
       trail.segments[i].dalt,
       trail.segments[i].mid,
-      index: i,
       duration: duration,
       resting: resting,
     ));

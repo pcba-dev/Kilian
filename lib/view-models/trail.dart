@@ -5,13 +5,9 @@ class TrailSegmentViewModel extends TrailSegment {
     super.hdist,
     super.dalt,
     super.mid, {
-    required this.index,
     required this.duration,
     required this.resting,
   });
-
-  /// Index
-  final int index;
 
   /// Segment duration.
   final Duration duration;
