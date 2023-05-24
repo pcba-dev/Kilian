@@ -1,8 +1,9 @@
-# Kilian
-
 [![License: MIT][license_badge]][license_link]
 
-Kilian is an app that provides accurate time estimates for trekking trails, helping hikers plan their journey with ease.
+<img src="https://github.com/kaminoan-dev/Kilian/assets/97683015/7dfdb808-ffef-4d32-b46c-a22e24ab5d45" />
+<br><br>
+
+### Kilian is an app that provides accurate time estimates for trekking trails, helping hikers plan their journey with ease.
 
 ## Description
 
@@ -12,11 +13,19 @@ Kilian allows users to input various segments or tracks of their hiking route, i
 
 ## Usage
 
-_TBD_
-
 <img src="https://github.com/kaminoan-dev/Kilian/assets/97683015/5b03b7b9-9be2-4191-9809-9594299a8cfe" width="200" />
 
-### M.I.D.
+_TBD_
+
+### Web
+
+https://kilian-app.web.app/
+
+### Download (Android | iOS)
+
+_TBD_
+
+### What is the M.I.D. classification?
 
 The M.I.D. ("Medium", "Itinerary", and "Difficulty in Displacement") classification method is utilized to rate the difficulty of excursions. This classification system, recommended by the Spanish Federation of Mountain Sports and Climbing ("Federación Española de Deportes de Montaña y Escalada" or FEDME), offers a comprehensive evaluation of the routes, enabling users to make informed decisions about their hiking plans.
 
