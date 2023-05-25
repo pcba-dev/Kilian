@@ -5,36 +5,23 @@ publish_to: none
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
+  flutter: ">=3.10.0 <3.11.0"
 
 dependencies:
-  # BLoC pattern.
+
   bloc: ^8.1.1
-
-  # For Json encoding and decoding.
   json_annotation: ^4.8.1
-
-  # Internationalization and localization facilities
   intl: ^0.18.0
-
-  # Redux for Dart using generics for typed State
   redux: ^5.0.0
 
   flutter:
     sdk: flutter
 
-  # BLoC pattern for Flutter.
   flutter_bloc: ^8.1.2
-
   flutter_localizations:
     sdk: flutter
-
-  # Declarative routes to regardless of the platform, handle deep and dynamic linking.
   go_router: ^7.0.0
-
-  # Utilities to consume a Redux Store to build Flutter Widgets.
   flutter_redux: ^0.10.0
-
-  # Responsive UI builder package.
   responsive_builder: ^0.6.4
 
 dev_dependencies:
@@ -43,7 +30,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail: ^0.3.0
-  very_good_analysis: ^4.0.0+1
   json_serializable: ^6.6.2
 
 # The following section is specific to Flutter.
