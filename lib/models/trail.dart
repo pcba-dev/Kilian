@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,9 +9,9 @@ import './geospatial.dart';
 part 'trail.g.dart';
 
 /// Track point.
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 @immutable
-class WayPoint {
+class WayPoint with EquatableMixin {
   const WayPoint(this.coordinates, this.altitude);
 
   final Coordinates coordinates;
@@ -27,21 +28,13 @@ class WayPoint {
   Map<String, dynamic> toJson() => _$WayPointToJson(this);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is WayPoint &&
-          runtimeType == other.runtimeType &&
-          coordinates == other.coordinates &&
-          altitude == other.altitude;
-
-  @override
-  int get hashCode => coordinates.hashCode ^ altitude.hashCode;
+  List<Object?> get props => [coordinates, altitude];
 }
 
 /// Track segment.
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 @immutable
-class TrailSegment {
+class TrailSegment with EquatableMixin {
   const TrailSegment(this.hdist, this.dalt, this.mid);
 
   const TrailSegment.fromHdistAndDalt(this.hdist, this.dalt, this.mid);
@@ -64,21 +57,12 @@ class TrailSegment {
   Map<String, dynamic> toJson() => _$TrailSegmentToJson(this);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is TrailSegment &&
-          runtimeType == other.runtimeType &&
-          dalt == other.dalt &&
-          hdist == other.hdist &&
-          mid == other.mid;
-
-  @override
-  int get hashCode => dalt.hashCode ^ hdist.hashCode ^ mid.hashCode;
+  List<Object?> get props => [hdist, dalt, mid];
 }
 
-@JsonSerializable(explicitToJson: true, genericArgumentFactories: true)
+@JsonSerializable(genericArgumentFactories: true)
 @immutable
-class Trail<T extends TrailSegment> {
+class Trail<T extends TrailSegment> with EquatableMixin {
   const Trail(final List<T> segments) : _segments = segments;
 
   final List<T> _segments;
@@ -132,11 +116,7 @@ class Trail<T extends TrailSegment> {
   Map<String, dynamic> toJson(Object Function(T) toJsonT) => _$TrailToJson(this, toJsonT);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) || other is Trail && runtimeType == other.runtimeType && segments == other.segments;
-
-  @override
-  int get hashCode => segments.hashCode;
+  List<Object?> get props => [segments];
 }
 
 /// M.I.D. level of a trail segment.

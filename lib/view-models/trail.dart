@@ -14,6 +14,9 @@ class TrailSegmentViewModel extends TrailSegment {
 
   /// Trail cumulative duration.
   final Duration resting;
+
+  @override
+  List<Object?> get props => [hdist, dalt, mid, duration, resting];
 }
 
 class TrailViewModel extends Trail<TrailSegmentViewModel> {
@@ -24,6 +27,9 @@ class TrailViewModel extends Trail<TrailSegmentViewModel> {
 
   /// Total trail resting and breaks duration.
   final Duration resting;
+
+  @override
+  List<Object?> get props => [segments, duration, resting];
 }
 
 extension Duration2Human on Duration {

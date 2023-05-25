@@ -201,6 +201,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.1"
+  equatable:
+    dependency: "direct main"
+    description:
+      name: equatable
+      sha256: "3e0141505477fd8ad55d6eb4e7776d3fe8430be8e497ccb1521370c3f21a3e2b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.8"
   fake_async:
     dependency: transitive
     description:
@@ -642,14 +650,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
-  very_good_analysis:
-    dependency: "direct dev"
-    description:
-      name: very_good_analysis
-      sha256: ebc48c51db35beeeec8c414e32f7bd78e612bd7f5992ccb0d46e19edaeb40b08
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.0+1"
   vm_service:
     dependency: transitive
     description:
@@ -692,4 +692,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=3.0.0-0 <=3.0.0"
-  flutter: ">=3.3.0"
+  flutter: ">=3.10.0"

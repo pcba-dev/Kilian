@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,7 +9,7 @@ part 'geospatial.g.dart';
 /// An immutable class representing a pair of latitude and longitude coordinates, stored in degrees.
 @JsonSerializable()
 @immutable
-class Coordinates {
+class Coordinates with EquatableMixin {
   final double lat;
   final double long;
 
@@ -19,24 +20,21 @@ class Coordinates {
   Map<String, dynamic> toJson() => _$CoordinatesToJson(this);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Coordinates && runtimeType == other.runtimeType && lat == other.lat && long == other.long;
-
-  @override
-  int get hashCode => lat.hashCode ^ long.hashCode;
+  List<Object?> get props => [lat, long];
 
   @override
   String toString() => 'Coordinates{latitude: $lat, longitude: $long}';
 }
 
 class EarthCalculator {
-  // The equatorial radius of the earth in meters
+  /// The equatorial radius of the earth in meters
   static const double _kEarthEqRadius = 6378137;
 
-  // The meridional radius of the earth in meters
+  /// The meridional radius of the earth in meters
   static const double _kEarthPolarRadius = 6357852.3;
-  // Flattening factor
+
+  /// Flattening factor.
+  // ignore: unused_field
   static const double _kF = (_kEarthEqRadius - _kEarthPolarRadius) / _kEarthEqRadius;
 
   static const EarthCalculator instance = EarthCalculator._();

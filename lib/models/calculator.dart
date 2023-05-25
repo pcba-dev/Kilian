@@ -1,12 +1,13 @@
 import 'dart:math' as math;
 
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kilian/models/user.dart';
 
+import './user.dart';
 import './trail.dart';
 
-@JsonSerializable()
-abstract class TrailCalculator {
+@JsonSerializable(createFactory: false, createToJson: false)
+abstract class TrailCalculator with EquatableMixin {
   const TrailCalculator();
 
   Duration computeDuration(final TrailSegment segment, {required final FitnessLevel fitness});
@@ -104,4 +105,7 @@ class StandardTrailCalculator extends TrailCalculator {
     FitnessLevel.average: 1,
     FitnessLevel.athletic: 0.9,
   };
+
+  @override
+  List<Object?> get props => [];
 }

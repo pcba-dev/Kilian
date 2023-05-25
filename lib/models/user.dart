@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -7,7 +8,7 @@ part 'user.g.dart';
 
 @JsonSerializable()
 @immutable
-class UserParameters {
+class UserParameters with EquatableMixin {
   /// Fitness level.
   final FitnessLevel fitness;
 
@@ -25,11 +26,7 @@ class UserParameters {
   Map<String, dynamic> toJson() => _$UserParametersToJson(this);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) || other is UserParameters && runtimeType == other.runtimeType && fitness == other.fitness;
-
-  @override
-  int get hashCode => fitness.hashCode;
+  List<Object?> get props => [fitness, calculator];
 }
 
 /// Fitness level.
