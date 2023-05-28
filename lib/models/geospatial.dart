@@ -26,6 +26,39 @@ class Coordinates with EquatableMixin {
   String toString() => 'Coordinates{latitude: $lat, longitude: $long}';
 }
 
+/// Track point — a geo-located position with altitude.
+@JsonSerializable()
+@immutable
+class WayPoint extends Coordinates {
+  const WayPoint(double lat, double long, this.altitude) : super(lat, long);
+
+  /// Altitude in meters.
+  final double altitude;
+
+  /// JSON serialization.
+  factory WayPoint.fromJson(Map<String, dynamic> json) => _$WayPointFromJson(json);
+  Map<String, dynamic> toJson() => _$WayPointToJson(this);
+
+  @override
+  List<Object?> get props => [lat, long, altitude];
+}
+
+/// An ordered sequence of waypoints representing the GPS track/path.
+@JsonSerializable()
+@immutable
+class Path with EquatableMixin {
+  const Path(this.waypoints);
+
+  final List<WayPoint> waypoints;
+
+  /// JSON serialization.
+  factory Path.fromJson(Map<String, dynamic> json) => _$PathFromJson(json);
+  Map<String, dynamic> toJson() => _$PathToJson(this);
+
+  @override
+  List<Object?> get props => [waypoints];
+}
+
 class EarthCalculator {
   /// The equatorial radius of the earth in meters
   static const double _kEarthEqRadius = 6378137;

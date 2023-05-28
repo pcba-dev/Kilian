@@ -6,16 +6,6 @@ part of 'trail.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-WayPoint _$WayPointFromJson(Map<String, dynamic> json) => WayPoint(
-      Coordinates.fromJson(json['coordinates'] as Map<String, dynamic>),
-      (json['altitude'] as num).toDouble(),
-    );
-
-Map<String, dynamic> _$WayPointToJson(WayPoint instance) => <String, dynamic>{
-      'coordinates': instance.coordinates.toJson(),
-      'altitude': instance.altitude,
-    };
-
 TrailSegment _$TrailSegmentFromJson(Map<String, dynamic> json) => TrailSegment(
       (json['hdist'] as num).toDouble(),
       (json['dalt'] as num).toDouble(),

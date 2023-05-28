@@ -277,6 +277,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.0"
+  geotypes:
+    dependency: "direct main"
+    description:
+      name: geotypes
+      sha256: "5bedf57de92283133dd221e363812ef50eaaba414f0823b1974ef7d84b86991f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   glob:
     dependency: transitive
     description:

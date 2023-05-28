@@ -4,32 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import './geospatial.dart';
-
 part 'trail.g.dart';
-
-/// Track point.
-@JsonSerializable()
-@immutable
-class WayPoint with EquatableMixin {
-  const WayPoint(this.coordinates, this.altitude);
-
-  final Coordinates coordinates;
-
-  final double altitude;
-
-  double get lat => coordinates.lat;
-
-  double get long => coordinates.long;
-
-  /// JSON serialization.
-  factory WayPoint.fromJson(Map<String, dynamic> json) => _$WayPointFromJson(json);
-
-  Map<String, dynamic> toJson() => _$WayPointToJson(this);
-
-  @override
-  List<Object?> get props => [coordinates, altitude];
-}
 
 /// Track segment.
 @JsonSerializable()
