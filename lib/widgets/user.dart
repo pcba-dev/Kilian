@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kilian/widgets/basic.dart';
-import 'package:kilian/widgets/painting.dart';
 
-import './model_extensions.dart';
 import '../l10n/l10n.dart';
 import '../models/user.dart';
+import './basic.dart';
+import './painting.dart';
+import './model_extensions.dart';
 
 class FitnessSelector extends StatelessWidget {
   FitnessSelector({required this.value, required this.onChanged, super.key});

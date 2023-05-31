@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:kilian/models/trail.dart';
-import 'package:kilian/widgets/painting.dart';
-import 'package:kilian/widgets/theme.dart';
 
-import './basic.dart';
-import './model_extensions.dart';
+import '../models/trail.dart';
 import '../l10n/l10n.dart';
 import '../view-models/trail.dart';
+import './painting.dart';
+import './theme.dart';
+import './basic.dart';
+import './model_extensions.dart';
 
 const Widget _kSpacingHorizontalIcon = const SizedBox(width: 3);
 const Widget _kSpacingBetweenRow = const SizedBox(width: 8);
@@ -421,8 +421,7 @@ class _TrailSegmentInfo extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (segment.dalt.abs() > 0.1)
-          new Icon(segment.dalt > 0 ? Icons.arrow_upward : Icons.arrow_downward,
-              color: Colors.cyan, size: 16),
+          new Icon(segment.dalt > 0 ? Icons.arrow_upward : Icons.arrow_downward, color: Colors.cyan, size: 16),
         _kSpacingHorizontalIcon,
         new Text(
           str,
@@ -446,10 +445,7 @@ class _TrailSegmentInfo extends StatelessWidget {
             child: new Center(
               child: new Text(
                 segment.mid.toNumber().toString(),
-                style: new TextStyle(
-                    fontSize: 16,
-                    color: segment.mid.color,
-                    fontWeight: FontWeight.bold),
+                style: new TextStyle(fontSize: 16, color: segment.mid.color, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ),

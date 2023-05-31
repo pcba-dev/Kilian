@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kilian/widgets/painting.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-import 'theme.dart';
+import './painting.dart';
+import './theme.dart';
 
 extension MediaQueryDataExtended on MediaQueryData {
   /// Device .

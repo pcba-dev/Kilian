@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:kilian/models/user.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../models/user.dart';
 import '../l10n/l10n.dart';
-import '../states/app_state.dart';
-import '../states/user_parameters_action.dart';
+import '../states/user_parameters_cubit.dart';
+import '../states/user_parameters_event.dart';
 import '../widgets/painting.dart';
 import '../widgets/user.dart';
 
@@ -13,16 +13,15 @@ class SettingsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, UserParameters>(
-      converter: (store) => store.state.parameters,
-      builder: (_, params) {
+    return BlocBuilder<UserParametersCubit, UserParameters>(
+      builder: (context, params) {
         return new SimpleDialog(
           contentPadding: const EdgeInsets.symmetric(horizontal: 2 * kMarginSize, vertical: 3 * kMarginSize),
           title: new Text(context.l10n.settingsTitle, textAlign: TextAlign.center),
           children: [
             new FitnessSelector(
               value: params.fitness,
-              onChanged: _onChangeFitness,
+              onChanged: (f) => _onChangeFitness(context, f),
             )
           ],
         );
@@ -31,8 +30,8 @@ class SettingsDialog extends StatelessWidget {
   }
 }
 
-void _onChangeFitness(final FitnessLevel? fitness) {
+void _onChangeFitness(final BuildContext context, final FitnessLevel? fitness) {
   if (fitness != null) {
-    AppStore.instance.dispatch(new ChangeFitnessAction(fitness));
+    context.read<UserParametersCubit>().add(new ChangeFitnessEvent(fitness));
   }
 }

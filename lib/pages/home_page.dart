@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:kilian/pages/settings_page.dart';
-import 'package:kilian/states/app_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../l10n/l10n.dart';
 import '../models/trail.dart';
 import '../models/user.dart';
-import '../states/trail_action.dart';
+import '../states/trail_cubit.dart';
+import '../states/trail_event.dart';
+import '../states/user_parameters_cubit.dart';
+import '../states/utils.dart';
 import '../view-models/trail.dart';
 import '../widgets/form_fields.dart';
 import '../widgets/painting.dart';
 import '../widgets/theme.dart';
 import '../widgets/trail.dart';
+import './settings_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -28,14 +30,18 @@ class HomePage extends StatelessWidget {
         body: new Center(
           child: new ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: kMinWidthTablet),
-            child: new StoreBuilder<AppState>(builder: (_, store) {
-              return new _UserTrailView(
-                trail: store.state.trail,
-                params: store.state.parameters,
-                onEditSegment: (s, i) => _onEditSegmentPressed(context, s, i),
-                onReorder: _onReorderSegment,
-              );
-            }),
+            child: BlocBuilder<TrailCubit, Trail<TrailSegment>>(
+              builder: (context, trail) {
+                final UserParameters params = context.watch<UserParametersCubit>().state;
+                final TrailViewModel view = computeTrailView(params: params, trail: trail);
+                return new _UserTrailView(
+                  trail: view,
+                  params: params,
+                  onEditSegment: (s, i) => _onEditSegmentPressed(context, s, i),
+                  onReorder: (o, n) => _onReorderSegment(context, o, n),
+                );
+              },
+            ),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -65,7 +71,7 @@ class HomePage extends StatelessWidget {
       builder: (_) {
         return new TrailSegmentDialog(
           onSavedPressed: (newSegment) {
-            AppStore.instance.dispatch(new AddSegmentAction(newSegment));
+            context.read<TrailCubit>().add(new AddSegmentEvent(newSegment));
           },
         );
       },
@@ -79,19 +85,19 @@ class HomePage extends StatelessWidget {
         return new TrailSegmentDialog(
           initial: segment,
           onSavedPressed: (newSegment) {
-            AppStore.instance.dispatch(new ReplaceSegmentAction(index, newSegment));
+            context.read<TrailCubit>().add(new ReplaceSegmentEvent(index, newSegment));
           },
           onDeletePressed: () {
-            AppStore.instance.dispatch(new RemoveSegmentAction(index));
+            context.read<TrailCubit>().add(new RemoveSegmentEvent(index));
           },
         );
       },
     );
   }
 
-  void _onReorderSegment(final int oldPos, final int newPos) {
+  void _onReorderSegment(final BuildContext context, final int oldPos, final int newPos) {
     if (newPos != oldPos && newPos != oldPos + 1) {
-      AppStore.instance.dispatch(new ReorderSegmentAction(oldPos, newPos));
+      context.read<TrailCubit>().add(new ReorderSegmentEvent(oldPos, newPos));
     }
   }
 }
@@ -132,8 +138,7 @@ class _UserTrailView extends StatelessWidget {
               // Segments section.
               new Expanded(
                 child: new ListView(
-                  padding: const EdgeInsets.fromLTRB(
-                      kMarginSize, 0, kMarginSize, 70),
+                  padding: const EdgeInsets.fromLTRB(kMarginSize, 0, kMarginSize, 70),
                   children: _buildListItems(),
                 ),
               )
@@ -202,9 +207,7 @@ class _UserTrailView extends StatelessWidget {
           width: double.infinity,
           child: new Padding(
             padding: const EdgeInsets.symmetric(vertical: 4),
-            child: ColoredBox(
-                color:
-                    data.isNotEmpty ? AppColors.secondary : Colors.transparent),
+            child: ColoredBox(color: data.isNotEmpty ? AppColors.secondary : Colors.transparent),
           ),
         );
       },

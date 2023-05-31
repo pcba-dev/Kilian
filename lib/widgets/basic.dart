@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:kilian/widgets/responsive.dart';
 
+import './responsive.dart';
 import './painting.dart';
 
 class TipWidget extends StatelessWidget {

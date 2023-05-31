@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:kilian/pages/router.dart';
-import 'package:kilian/states/app_state.dart';
 
-import './widgets/theme.dart';
+import 'pages/router.dart';
+import 'states/trail_cubit.dart';
+import 'states/user_parameters_cubit.dart';
+import 'widgets/theme.dart';
 import 'l10n/l10n.dart';
 
 Future<void> main() async {
@@ -27,8 +28,11 @@ class KilianApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new StoreProvider(
-      store: AppStore.instance,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<UserParametersCubit>(create: (_) => new UserParametersCubit()),
+        BlocProvider<TrailCubit>(create: (_) => new TrailCubit()),
+      ],
       child: MaterialApp.router(
         title: 'Kilian',
         routerConfig: kRouter,
