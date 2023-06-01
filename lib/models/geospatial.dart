@@ -30,13 +30,14 @@ class Coordinates with EquatableMixin {
 @JsonSerializable()
 @immutable
 class WayPoint extends Coordinates {
-  const WayPoint(double lat, double long, this.altitude) : super(lat, long);
+  const WayPoint(super.lat, super.long, this.altitude);
 
   /// Altitude in meters.
   final double altitude;
 
   /// JSON serialization.
   factory WayPoint.fromJson(Map<String, dynamic> json) => _$WayPointFromJson(json);
+  @override
   Map<String, dynamic> toJson() => _$WayPointToJson(this);
 
   @override

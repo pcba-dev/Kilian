@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 /// A [TextFormField] that contains only accepts numbers.
 ///
@@ -125,7 +124,7 @@ class NumberFormField extends TextFormField {
         // Check for precision and number of decimals.
         if (precision != null || scale != null) {
           // Remove sign and decimal point/comma.
-          final String plain = newValue.text.replaceAll(RegExp(r'[-.,]?'), '');
+          final String plain = newValue.text.replaceAll(RegExp('[-.,]?'), '');
 
           // Remove whole part.
           final String decimals = newValue.text.replaceFirst(RegExp(r'-?\d*[.,]?'), '');

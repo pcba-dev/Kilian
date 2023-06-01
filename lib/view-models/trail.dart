@@ -53,6 +53,6 @@ extension Duration2Human on Duration {
     final int minutes = microseconds ~/ Duration.microsecondsPerMinute - hours * 60;
     final String minutesPadding = minutes < 10 ? '0' : '';
 
-    return "$sign${hours.abs()}h ${minutesPadding}${minutes}min";
+    return "$sign${hours.abs()}h $minutesPadding${minutes}min";
   }
 }

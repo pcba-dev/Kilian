@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../models/trail.dart';
 import '../l10n/l10n.dart';
+import '../models/trail.dart';
 import '../view-models/trail.dart';
-import './painting.dart';
-import './theme.dart';
-import './basic.dart';
-import './model_extensions.dart';
+import 'basic.dart';
+import 'model_extensions.dart';
+import 'painting.dart';
+import 'theme.dart';
 
 const Widget _kSpacingHorizontalIcon = const SizedBox(width: 3);
 const Widget _kSpacingBetweenRow = const SizedBox(width: 8);
@@ -69,7 +69,7 @@ class _TrailSummaryState extends State<TrailSummary> {
   Widget _buildTitleText(BuildContext context) {
     return new Row(
       children: [
-        new SizedBox(width: 24),
+        const SizedBox(width: 24),
         new Expanded(
           child: new Text(
             context.l10n.trailSummaryTitle,
@@ -125,7 +125,7 @@ class _TrailSummaryState extends State<TrailSummary> {
         new Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            new Icon(Icons.arrow_outward, color: Colors.brown, size: 22),
+            const Icon(Icons.arrow_outward, color: Colors.brown, size: 22),
             _kSpacingHorizontalIcon,
             new Text(
               strDist,
@@ -138,7 +138,7 @@ class _TrailSummaryState extends State<TrailSummary> {
         new Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            new Icon(Icons.start, color: Colors.blueGrey, size: 20),
+            const Icon(Icons.start, color: Colors.blueGrey, size: 20),
             _kSpacingHorizontalIcon,
             new Text(
               strHdist,
@@ -275,7 +275,7 @@ class DraggableTrailSegmentTile extends StatelessWidget {
           )
         ],
       );
-    });
+    },);
   }
 }
 
@@ -317,7 +317,6 @@ class TrailSegmentTile extends StatelessWidget {
 class _SegmentIndexIndicator extends StatelessWidget {
   const _SegmentIndexIndicator({
     required this.index,
-    super.key,
   });
 
   final int index;
@@ -344,7 +343,7 @@ class _SegmentIndexIndicator extends StatelessWidget {
 }
 
 class _TrailSegmentInfo extends StatelessWidget {
-  const _TrailSegmentInfo(this.segment, {this.onPressed, super.key});
+  const _TrailSegmentInfo(this.segment, {this.onPressed});
 
   final TrailSegmentViewModel segment;
 
@@ -439,7 +438,7 @@ class _TrailSegmentInfo extends StatelessWidget {
         child: new DecoratedBox(
           decoration: new BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(radius)),
-              border: Border.all(color: segment.mid.color)),
+              border: Border.all(color: segment.mid.color),),
           child: new SizedBox.square(
             dimension: 2 * radius,
             child: new Center(
@@ -463,7 +462,6 @@ class _TrailSegmentInfo extends StatelessWidget {
       children: [
         new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.max,
           children: [
             const Icon(Icons.hiking, color: Colors.blueGrey, size: 16),
             _kSpacingHorizontalIcon,
@@ -479,7 +477,6 @@ class _TrailSegmentInfo extends StatelessWidget {
         _kVerticalSpacing,
         new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.max,
           children: [
             const Icon(Icons.pause_circle, color: Colors.blueGrey, size: 16),
             _kSpacingHorizontalIcon,
@@ -557,12 +554,12 @@ class TrailSegmentTilesHeader extends StatelessWidget {
   }
 
   Widget _buildMIDLevelWidget() {
-    return SizedBox(
+    return const SizedBox(
       width: 30,
-      child: new Center(
-        child: const Text(
-          "M.I.D.",
-          style: const TextStyle(fontSize: 10),
+      child: Center(
+        child: Text(
+          'M.I.D.',
+          style: TextStyle(fontSize: 10),
           textAlign: TextAlign.center,
         ),
       ),
@@ -595,11 +592,11 @@ class MIDSelector extends StatelessWidget {
         .map<DropdownMenuItem<MIDLevel>>((e) => new DropdownMenuItem<MIDLevel>(
               value: e,
               child: new Text(e.toStringLocalized(context), maxLines: 1),
-            ))
+            ),)
         .toList();
 
     final String tip =
-        MIDLevel.values.map((e) => "• ${e.toStringLocalized(context)}: ${e.getTipLocalized(context)}").join("\n\n");
+        MIDLevel.values.map((e) => '• ${e.toStringLocalized(context)}: ${e.getTipLocalized(context)}').join('\n\n');
 
     return new SizedBox(
       width: 150,

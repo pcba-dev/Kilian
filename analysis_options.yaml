@@ -1,9 +1,12 @@
 include: package:very_good_analysis/analysis_options.yaml
 
+format:
+  line_length: 120
+
 analyzer:
-  strong-mode:
-    implicit-casts: false
-    implicit-dynamic: false
+  language:
+    strict-casts: true
+    strict-inference: true
   exclude:
     - lib/**.json.dart
     - lib/**.g.dart
@@ -24,6 +27,8 @@ linter:
     public_member_api_docs: false
     # Do NOT sort constructor declarations before other members.
     sort_constructors_first: false
+    # ALLOW unsorted dependencies in pubspec.yaml.
+    sort_pub_dependencies: false
     # ALLOW "new" keyword to create instances.
     unnecessary_new: false
     # ALLOW repeating "const" keyword in a const context.

@@ -1,0 +1,37 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Mobile (Debug)",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "Mobile (Profile)",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--profile"
+            ]
+        },
+        {
+            "name": "Web (Debug)",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "-d",
+                "chrome"
+            ]
+        },
+        {
+            "name": "Web (Profile)",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "-d",
+                "chrome",
+                "--profile"
+            ]
+        }
+    ]
+}

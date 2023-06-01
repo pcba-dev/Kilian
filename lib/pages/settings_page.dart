@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../models/user.dart';
 import '../l10n/l10n.dart';
+import '../models/user.dart';
 import '../states/user_parameters_cubit.dart';
 import '../states/user_parameters_event.dart';
 import '../widgets/painting.dart';

@@ -13,7 +13,7 @@ import '../widgets/form_fields.dart';
 import '../widgets/painting.dart';
 import '../widgets/theme.dart';
 import '../widgets/trail.dart';
-import './settings_page.dart';
+import 'settings_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -108,7 +108,6 @@ class _UserTrailView extends StatelessWidget {
     required this.params,
     required this.onEditSegment,
     required this.onReorder,
-    super.key,
   });
 
   final UserParameters params;
@@ -143,8 +142,8 @@ class _UserTrailView extends StatelessWidget {
                 ),
               )
             ],
-          ));
-    });
+          ),);
+    },);
   }
 
   static Widget _buildSegmentsTitleText(BuildContext context) {
@@ -188,7 +187,7 @@ class _UserTrailView extends StatelessWidget {
           segment: trail.segments[index],
           index: index,
           onPressed: () => onEditSegment(trail.segments[index], index),
-        ));
+        ),);
       }
     }
     // Add a draggable target box at the end.
@@ -280,7 +279,7 @@ class _TrailSegmentDialogState extends State<TrailSegmentDialog> {
                         labelText: context.l10n.horizontalDistanceLabel,
                         hintText: context.l10n.horizontalDistanceHint,
                         border: _kInputBorder,
-                        suffixText: "m",
+                        suffixText: 'm',
                       ),
                       initialValue: widget.initial?.hdist.toInt(),
                       precision: 4,
@@ -295,7 +294,7 @@ class _TrailSegmentDialogState extends State<TrailSegmentDialog> {
                         labelText: context.l10n.daltitudeLabel,
                         hintText: context.l10n.daltitudeHint,
                         border: _kInputBorder,
-                        suffixText: "m",
+                        suffixText: 'm',
                       ),
                       initialValue: widget.initial?.dalt.toInt(),
                       precision: 3,

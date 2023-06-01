@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import './responsive.dart';
-import './painting.dart';
+import 'painting.dart';
+import 'responsive.dart';
 
 class TipWidget extends StatelessWidget {
   const TipWidget({
@@ -26,7 +26,7 @@ class TipWidget extends StatelessWidget {
 }
 
 class _WebTipWidget extends StatelessWidget {
-  const _WebTipWidget({required this.tip, super.key});
+  const _WebTipWidget({required this.tip});
 
   final String tip;
 
@@ -45,7 +45,7 @@ class _WebTipWidget extends StatelessWidget {
 }
 
 class _PlatformTipWidget extends StatelessWidget {
-  const _PlatformTipWidget({required this.tip, super.key});
+  const _PlatformTipWidget({required this.tip});
 
   final String tip;
 

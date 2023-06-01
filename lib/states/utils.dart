@@ -39,7 +39,7 @@ TrailViewModel computeTrailView({required final UserParameters params, required 
       trail.segments[i].mid,
       duration: duration,
       resting: resting,
-    ));
+    ),);
 
     totalDuration += duration;
     totalResting += resting;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-import './painting.dart';
-import './theme.dart';
+import 'painting.dart';
+import 'theme.dart';
 
 extension MediaQueryDataExtended on MediaQueryData {
   /// Device .
@@ -135,7 +135,6 @@ class ResponsiveDialog extends StatelessWidget {
       );
       const Widget space = const SizedBox(width: kMinInteractiveDimension);
       widget = new Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
           // App-bar with the close button.
@@ -143,8 +142,6 @@ class ResponsiveDialog extends StatelessWidget {
             height: kToolbarHeight,
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
               children: [
                 if (mobile) close else space,
                 // Short titles are placed in the appbar.
@@ -167,7 +164,6 @@ class ResponsiveDialog extends StatelessWidget {
         widget = new Padding(
           padding: padding,
           child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
               _buildTitle(title!),
@@ -183,7 +179,7 @@ class ResponsiveDialog extends StatelessWidget {
     widget = new SingleChildScrollView(
       padding: effectiveMargin,
       child: new Card(
-        elevation: 24.0, // Default elevation for dialogs (see [Dialog])
+        elevation: 24, // Default elevation for dialogs (see [Dialog])
         shape: kRoundedBorderMedium,
         child: widget,
       ),

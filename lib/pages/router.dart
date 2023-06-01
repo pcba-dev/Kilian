@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import './home_page.dart';
+import 'home_page.dart';
 
 /// Pages routes.
 enum PagesRoutes {
@@ -12,18 +12,18 @@ extension PagesRoutesExtended on PagesRoutes {
   String get name {
     switch (this) {
       case PagesRoutes.home:
-        return "home";
+        return 'home';
       default:
-        return "404";
+        return '404';
     }
   }
 
   String get path {
     switch (this) {
       case PagesRoutes.home:
-        return "/";
+        return '/';
       default:
-        return "/404";
+        return '/404';
     }
   }
 }

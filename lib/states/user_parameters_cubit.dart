@@ -13,7 +13,7 @@ class UserParametersCubit extends Cubit<UserParameters> {
     if (event is ChangeFitnessEvent) {
       // Handler for [ChangeFitnessEvent].
       emit(new UserParameters(
-          calculator: state.calculator, fitness: event.fitness));
+          calculator: state.calculator, fitness: event.fitness,),);
     }
   }
 }

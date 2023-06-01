@@ -11,23 +11,23 @@ class TrailCubit extends Cubit<Trail<TrailSegment>> {
     if (event is AddSegmentEvent) {
       // Handler for [AddSegmentEvent].
       emit(new Trail<TrailSegment>(
-          new List.from(state.segments)..add(event.segment)));
+          new List<TrailSegment>.from(state.segments)..add(event.segment),),);
     } else if (event is RemoveSegmentEvent) {
       // Handler for [RemoveSegmentEvent].
       emit(new Trail<TrailSegment>(
-          new List.from(state.segments)..removeAt(event.index)));
+          new List<TrailSegment>.from(state.segments)..removeAt(event.index),),);
     } else if (event is ReplaceSegmentEvent) {
       // Handler for [ReplaceSegmentEvent].
-      emit(new Trail<TrailSegment>(new List.from(state.segments)
+      emit(new Trail<TrailSegment>(new List<TrailSegment>.from(state.segments)
         ..removeAt(event.index)
-        ..insert(event.index, event.segment)));
+        ..insert(event.index, event.segment),),);
     } else if (event is ReorderSegmentEvent) {
       // Handler for [ReorderSegmentEvent].
-      final List<TrailSegment> segments = new List.from(state.segments);
+      final List<TrailSegment> segments = new List<TrailSegment>.from(state.segments);
       final TrailSegment segment = segments.removeAt(event.oldPos);
       segments.insert(
           event.newPos > event.oldPos ? event.newPos - 1 : event.newPos,
-          segment);
+          segment,);
       emit(new Trail<TrailSegment>(segments));
     }
   }

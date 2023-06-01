@@ -34,7 +34,7 @@ extension FitnessLevelExtended on FitnessLevel {
         return context.l10n.fitnessAthleticTip;
       default:
         // Protection code.
-        throw UnimplementedError(this.toString());
+        throw UnimplementedError(toString());
     }
   }
 }
@@ -54,7 +54,7 @@ extension MIDLevelExtended on MIDLevel {
         return 5;
       default:
         // Protection code.
-        throw UnimplementedError(this.toString());
+        throw UnimplementedError(toString());
     }
   }
 
@@ -72,7 +72,7 @@ extension MIDLevelExtended on MIDLevel {
         return Colors.deepOrange;
       default:
         // Protection code.
-        throw UnimplementedError(this.toString());
+        throw UnimplementedError(toString());
     }
   }
 
@@ -105,7 +105,7 @@ extension MIDLevelExtended on MIDLevel {
         return context.l10n.midLevelExtremeTip;
       default:
         // Protection code.
-        throw UnimplementedError(this.toString());
+        throw UnimplementedError(toString());
     }
   }
 }

@@ -3,8 +3,8 @@ import 'dart:math' as math;
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import './user.dart';
-import './trail.dart';
+import 'trail.dart';
+import 'user.dart';
 
 @JsonSerializable(createFactory: false, createToJson: false)
 abstract class TrailCalculator with EquatableMixin {

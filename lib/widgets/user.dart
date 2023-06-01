@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../l10n/l10n.dart';
 import '../models/user.dart';
-import './basic.dart';
-import './painting.dart';
-import './model_extensions.dart';
+import 'basic.dart';
+import 'model_extensions.dart';
+import 'painting.dart';
 
 class FitnessSelector extends StatelessWidget {
   FitnessSelector({required this.value, required this.onChanged, super.key});
@@ -23,11 +23,11 @@ class FitnessSelector extends StatelessWidget {
         .map<DropdownMenuItem<FitnessLevel>>((e) => new DropdownMenuItem<FitnessLevel>(
               value: e,
               child: new Text(e.toStringLocalized(context), maxLines: 1),
-            ))
+            ),)
         .toList();
 
     final String tip =
-        FitnessLevel.values.map((e) => "• ${e.toStringLocalized(context)}: ${e.getTipLocalized(context)}").join("\n\n");
+        FitnessLevel.values.map((e) => '• ${e.toStringLocalized(context)}: ${e.getTipLocalized(context)}').join('\n\n');
 
     return new SizedBox(
       width: 150,

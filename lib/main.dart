@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
+import 'l10n/l10n.dart';
 import 'pages/router.dart';
 import 'states/trail_cubit.dart';
 import 'states/user_parameters_cubit.dart';
 import 'widgets/theme.dart';
-import 'l10n/l10n.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

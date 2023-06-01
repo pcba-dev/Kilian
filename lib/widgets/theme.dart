@@ -9,4 +9,4 @@ abstract class AppColors {
 }
 
 final ThemeData kTheme = new ThemeData(
-    colorScheme: ThemeData().colorScheme.copyWith(primary: AppColors.primary, secondary: AppColors.secondary));
+    colorScheme: ThemeData().colorScheme.copyWith(primary: AppColors.primary, secondary: AppColors.secondary),);
